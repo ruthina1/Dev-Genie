@@ -1,222 +1,419 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaNode, FaReact, FaPython, FaServer, FaPaperPlane, FaCheck, FaDownload } from 'react-icons/fa';
+import { SiExpress, SiMongodb, SiDjango, SiFlask } from 'react-icons/si';
 import { generateBasicProject, downloadZip } from '../services/projectGenerator';
 import './ChatBasic.css';
 
 const ChatBasic = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
-  
-  const [projectConfig, setProjectConfig] = useState({
-    projectName: '',
-    description: '',
-    features: 'REST API, Authentication, Database',
-    includeAuth: true,
-    includeDatabase: true,
-    includeTesting: true
-  });
-
+  const [isVisible, setIsVisible] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [userInput, setUserInput] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
   const [generatedZip, setGeneratedZip] = useState(null);
+  const messagesEndRef = useRef(null);
+  const textareaRef = useRef(null);
 
-  const handleGenerate = async () => {
-    if (!projectConfig.projectName || !projectConfig.description) return;
-    
-    setLoading(true);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const zip = await generateBasicProject(projectConfig);
-      setGeneratedZip(zip);
-      setStep(2);
-    } catch (error) {
-      console.error('Generation error:', error);
-      alert('Failed to generate project');
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    setTimeout(() => setIsVisible(true), 100);
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
     }
+  }, [userInput]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleDownload = async () => {
-    if (generatedZip) {
-      setLoading(true);
+  const parseUserPrompt = (prompt) => {
+    const projectName = prompt.match(/(?:called|named)\s+["']?([^"'\s,]+)["']?/i)?.[1] || 
+                       'my-project';
+    
+    let framework = '';
+    let features = [];
+    
+    if (prompt.toLowerCase().includes('node') || prompt.toLowerCase().includes('express')) {
+      framework = 'Node.js + Express';
+      features.push('REST API', 'Express Server');
+    }
+    if (prompt.toLowerCase().includes('react')) {
+      framework = 'React';
+      features.push('React Components', 'Webpack');
+    }
+    if (prompt.toLowerCase().includes('python') || prompt.toLowerCase().includes('flask')) {
+      framework = 'Python + Flask';
+      features.push('Flask API', 'Python Routes');
+    }
+    if (prompt.toLowerCase().includes('django')) {
+      framework = 'Django';
+      features.push('Django REST', 'Admin Panel');
+    }
+    
+    if (prompt.toLowerCase().includes('mongodb') || prompt.toLowerCase().includes('mongo')) {
+      features.push('MongoDB Database');
+    }
+    if (prompt.toLowerCase().includes('postgres') || prompt.toLowerCase().includes('postgresql')) {
+      features.push('PostgreSQL Database');
+    }
+    if (prompt.toLowerCase().includes('auth')) {
+      features.push('Authentication');
+    }
+    if (prompt.toLowerCase().includes('test')) {
+      features.push('Testing');
+    }
+
+    return {
+      projectName,
+      description: prompt,
+      framework,
+      features: features.join(', ') || 'Basic Project Structure',
+      includeAuth: prompt.toLowerCase().includes('auth'),
+      includeDatabase: prompt.toLowerCase().includes('mongo') || prompt.toLowerCase().includes('database'),
+      includeTesting: prompt.toLowerCase().includes('test')
+    };
+  };
+
+  const handleSendMessage = async () => {
+    if (!userInput.trim() || isGenerating) return;
+
+    const userMessage = {
+      type: 'user',
+      content: userInput,
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setUserInput('');
+    setIsGenerating(true);
+
+    // AI thinking message
+    setTimeout(() => {
+      const thinkingMessage = {
+        type: 'ai',
+        content: 'analyzing',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, thinkingMessage]);
+    }, 500);
+
+    // AI response
+    setTimeout(async () => {
+      const config = parseUserPrompt(userMessage.content);
+      
+      const aiMessage = {
+        type: 'ai',
+        content: 'response',
+        data: {
+          projectName: config.projectName,
+          framework: config.framework,
+          features: config.features,
+          structure: [
+            '📄 package.json',
+            '📄 README.md',
+            '📄 .gitignore',
+            '📄 .env.example',
+            '📁 src/',
+            '  📄 index.js',
+            '  📁 config/',
+            '  📁 routes/',
+            '  📁 controllers/',
+            config.includeDatabase && '  📁 models/',
+            '  📁 middleware/',
+            '  📁 utils/',
+            config.includeTesting && '📁 tests/'
+          ].filter(Boolean)
+        },
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev.filter(m => m.content !== 'analyzing'), aiMessage]);
+
+      // Generate ZIP
       try {
-        await downloadZip(generatedZip, projectConfig.projectName);
-        setStep(3);
+        const zip = await generateBasicProject(config);
+        setGeneratedZip({ zip, name: config.projectName, messageIndex: messages.length + 1 });
+      } catch (error) {
+        console.error('Generation error:', error);
+      }
+
+      setIsGenerating(false);
+    }, 2500);
+  };
+
+  const handleDownload = async (messageIndex) => {
+    if (generatedZip && generatedZip.messageIndex === messageIndex) {
+      try {
+        await downloadZip(generatedZip.zip, generatedZip.name);
+        
+        const successMessage = {
+          type: 'ai',
+          content: 'downloaded',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, successMessage]);
+        setGeneratedZip(null);
       } catch (error) {
         console.error('Download error:', error);
-      } finally {
-        setLoading(false);
       }
     }
   };
 
-  const handleReset = () => {
-    setStep(1);
-    setProjectConfig({
-      projectName: '',
-      description: '',
-      features: 'REST API, Authentication, Database',
-      includeAuth: true,
-      includeDatabase: true,
-      includeTesting: true
-    });
-    setGeneratedZip(null);
+  const useCaseExamples = [
+    {
+      icon: <FaNode />,
+      title: 'Node.js Backend',
+      prompt: 'I want a Node.js setup with Express and MongoDB'
+    },
+    {
+      icon: <FaReact />,
+      title: 'React Frontend',
+      prompt: 'Create a React frontend base structure'
+    },
+    {
+      icon: <SiFlask />,
+      title: 'Python Flask',
+      prompt: 'I need a Python Flask project skeleton'
+    },
+    {
+      icon: <SiDjango />,
+      title: 'Django REST',
+      prompt: 'Setup Django REST API with authentication'
+    }
+  ];
+
+  const handleExampleClick = (prompt) => {
+    setUserInput(prompt);
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
   };
 
   return (
-    <div className="basic-page">
+    <div className={`basic-page ${isVisible ? 'visible' : ''}`}>
       {/* Navigation */}
-      <nav className="nav">
-        <div className="nav-container">
-          <div className="nav-number">[01]</div>
-          <button className="nav-link" onClick={() => navigate('/')}>Home</button>
-        </div>
-        <div className="nav-container">
-          <div className="nav-number">[02]</div>
-          <button className="nav-link active">Basic</button>
+      <nav className="get-started-nav">
+        <div className="nav-content">
+          <div className="logo" onClick={() => navigate('/')}>
+            <span className="logo-bracket">[</span>
+            <span className="logo-dev">DEV</span>
+            <span className="logo-bracket">]</span>
+            <span className="logo-genie">GENIE</span>
+          </div>
+          <div className="nav-links">
+            <button className="nav-btn" onClick={() => navigate('/')}>
+              <span className="nav-number">[01]</span>
+              <span className="nav-text">Home</span>
+            </button>
+            <button className="nav-btn" onClick={() => navigate('/get-started')}>
+              <span className="nav-number">[02]</span>
+              <span className="nav-text">Get Started</span>
+            </button>
+            <button className="nav-btn active">
+              <span className="nav-number">[03]</span>
+              <span className="nav-text">Basic</span>
+            </button>
+          </div>
         </div>
       </nav>
 
-      <main className="main-content">
-        {step === 1 && (
-          <div className="section">
-            <div className="section-header">
-              <h1 className="main-title">
-                QUICK PROJECT
-                <br />
-                GENERATOR
-              </h1>
-              <p className="main-subtitle">
-                Enter your project details and generate a complete structure instantly
-              </p>
+      {/* Main Content */}
+      <main className="basic-main">
+        {/* Description Section */}
+        <div className="description-section">
+          <div className="description-header">
+            <div className="status-badge">
+              <span className="status-dot"></span>
+              <span className="status-text">QUICK SETUP</span>
+            </div>
+            
+            <h1 className="description-title">
+              <span className="title-line">Basic</span>
+              <span className="title-line title-highlight">Service</span>
+            </h1>
+
+            <p className="description-subtitle">
+              Describe what environment you want, and DevGenie will create it instantly.
+              <br />
+              Fast, simple, and production-ready project structures.
+            </p>
+          </div>
+
+          <div className="how-it-works">
+            <h2 className="section-label">HOW IT WORKS</h2>
+            <div className="steps-grid">
+              <div className="step-item">
+                <div className="step-number">01</div>
+                <h3>Describe Your Project</h3>
+                <p>Enter a prompt describing what you want to build</p>
+              </div>
+              <div className="step-item">
+                <div className="step-number">02</div>
+                <h3>AI Generates Structure</h3>
+                <p>DevGenie creates folders, files, and configurations</p>
+              </div>
+              <div className="step-item">
+                <div className="step-number">03</div>
+                <h3>Download & Build</h3>
+                <p>Download the ZIP file and start coding immediately</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="use-cases">
+            <h2 className="section-label">USE CASE EXAMPLES</h2>
+            <div className="examples-grid">
+              {useCaseExamples.map((example, index) => (
+                <div 
+                  key={index}
+                  className="example-card"
+                  onClick={() => handleExampleClick(example.prompt)}
+                >
+                  <div className="example-icon">{example.icon}</div>
+                  <h4>{example.title}</h4>
+                  <p>"{example.prompt}"</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Chat Interface Section - ChatGPT Style */}
+        <div className="chat-section">
+          <div className="chat-container">
+            {/* Messages */}
+            <div className="messages-container">
+              {messages.length === 0 && (
+                <div className="empty-state">
+                  <div className="empty-icon">
+                    <FaServer size={40} />
+                  </div>
+                  <h3>Start a conversation</h3>
+                  <p>Type your project requirements below or click an example</p>
+                </div>
+              )}
+
+              {messages.map((message, index) => (
+                <div key={index} className={`message ${message.type === 'user' ? 'message-user' : 'message-ai'}`}>
+                  <div className="message-avatar">
+                    {message.type === 'user' ? (
+                      <div className="avatar-user">YOU</div>
+                    ) : (
+                      <div className="avatar-ai">AI</div>
+                    )}
+                  </div>
+                  
+                  <div className="message-content">
+                    {message.type === 'user' ? (
+                      <div className="message-text">{message.content}</div>
+                    ) : message.content === 'analyzing' ? (
+                      <div className="message-text">
+                        <div className="typing-indicator">
+                          <span></span><span></span><span></span>
+                        </div>
+                        Analyzing your requirements...
+                      </div>
+                    ) : message.content === 'response' ? (
+                      <div className="message-text">
+                        <p className="ai-intro">I've generated your project structure:</p>
+                        
+                        <div className="project-details">
+                          <div className="detail-row">
+                            <span className="detail-label">Project</span>
+                            <span className="detail-value">{message.data.projectName}</span>
+                          </div>
+                          {message.data.framework && (
+                            <div className="detail-row">
+                              <span className="detail-label">Framework</span>
+                              <span className="detail-value">{message.data.framework}</span>
+                            </div>
+                          )}
+                          <div className="detail-row">
+                            <span className="detail-label">Features</span>
+                            <span className="detail-value">{message.data.features}</span>
+                          </div>
+                        </div>
+
+                        <div className="file-structure">
+                          <div className="structure-header">
+                            <FaServer size={14} />
+                            <span>Project Structure</span>
+                          </div>
+                          <div className="structure-content">
+                            {message.data.structure.map((file, idx) => (
+                              <div key={idx} className="structure-line">{file}</div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <button className="download-button" onClick={() => handleDownload(index)}>
+                          <FaDownload />
+                          <span>Download ZIP</span>
+                        </button>
+                      </div>
+                    ) : message.content === 'downloaded' ? (
+                      <div className="message-text">
+                        <div className="success-indicator">
+                          <FaCheck />
+                          <span>Download Complete</span>
+                        </div>
+                        <p>Your project has been downloaded successfully. Extract the ZIP and run <code>npm install</code> to get started!</p>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
             </div>
 
-            <div className="form-container">
-              <div className="input-wrapper">
-                <label className="input-label">PROJECT NAME</label>
-                <input
-                  type="text"
-                  className="input-field"
-                  placeholder="my-awesome-project"
-                  value={projectConfig.projectName}
-                  onChange={(e) => setProjectConfig(prev => ({ ...prev, projectName: e.target.value }))}
-                />
-              </div>
-
-              <div className="input-wrapper">
-                <label className="input-label">PROJECT DESCRIPTION</label>
+            {/* Input Area - ChatGPT Style */}
+            <div className="input-area">
+              <div className="input-wrapper-chat">
                 <textarea
-                  className="textarea-field"
-                  rows="6"
-                  placeholder="A modern REST API with authentication, database integration, and comprehensive testing. Built with Express.js, MongoDB, and best practices."
-                  value={projectConfig.description}
-                  onChange={(e) => setProjectConfig(prev => ({ ...prev, description: e.target.value }))}
-                ></textarea>
+                  ref={textareaRef}
+                  className="chat-input"
+                  placeholder="Describe your project... (e.g., I want a Node.js setup with Express and MongoDB)"
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                  rows="1"
+                  disabled={isGenerating}
+                />
+                <button 
+                  className={`send-button ${!userInput.trim() || isGenerating ? 'disabled' : ''}`}
+                  onClick={handleSendMessage}
+                  disabled={!userInput.trim() || isGenerating}
+                >
+                  {isGenerating ? (
+                    <div className="spinner"></div>
+                  ) : (
+                    <FaPaperPlane />
+                  )}
+                </button>
               </div>
-
-              <button
-                className={`btn-primary ${loading ? 'loading' : ''}`}
-                onClick={handleGenerate}
-                disabled={!projectConfig.projectName || !projectConfig.description || loading}
-              >
-                {loading ? 'GENERATING...' : 'START GENERATE →'}
-              </button>
             </div>
           </div>
-        )}
-
-        {step === 2 && (
-          <div className="section">
-            <div className="section-header">
-              <h1 className="main-title">
-                PROJECT
-                <br />
-                GENERATED
-              </h1>
-              <p className="main-subtitle">
-                Your project structure is ready to download
-              </p>
-            </div>
-
-            <div className="project-info">
-              <div className="info-row">
-                <span className="info-label">NAME</span>
-                <span className="info-value">{projectConfig.projectName}</span>
-              </div>
-              <div className="info-row">
-                <span className="info-label">DESCRIPTION</span>
-                <span className="info-value">{projectConfig.description}</span>
-              </div>
-            </div>
-
-            <div className="file-structure">
-              <h3 className="structure-title">GENERATED FILES</h3>
-              <div className="file-list">
-                <div className="file-item">📄 package.json</div>
-                <div className="file-item">📄 README.md</div>
-                <div className="file-item">📄 .gitignore</div>
-                <div className="file-item">📄 .env.example</div>
-                <div className="file-item">📁 src/</div>
-                <div className="file-item indent">📄 index.js</div>
-                <div className="file-item indent">📁 config/</div>
-                <div className="file-item indent">📁 routes/</div>
-                <div className="file-item indent">📁 controllers/</div>
-                <div className="file-item indent">📁 models/</div>
-                <div className="file-item indent">📁 middleware/</div>
-                <div className="file-item indent">📁 utils/</div>
-                <div className="file-item">📁 tests/</div>
-              </div>
-            </div>
-
-            <div className="actions">
-              <button
-                className={`btn-primary ${loading ? 'loading' : ''}`}
-                onClick={handleDownload}
-                disabled={loading}
-              >
-                {loading ? 'PREPARING...' : 'DOWNLOAD ZIP →'}
-              </button>
-              <button className="btn-secondary" onClick={handleReset}>
-                START OVER
-              </button>
-            </div>
-          </div>
-        )}
-
-        {step === 3 && (
-          <div className="section">
-            <div className="section-header">
-              <h1 className="main-title">
-                DOWNLOAD
-                <br />
-                COMPLETE
-              </h1>
-              <p className="main-subtitle">
-                Your project has been downloaded successfully
-              </p>
-            </div>
-
-            <div className="success-message">
-              <div className="success-icon">✓</div>
-              <h2>THANK YOU</h2>
-              <p>Extract the ZIP file and run <code>npm install</code> to get started</p>
-            </div>
-
-            <div className="actions">
-              <button className="btn-primary" onClick={handleReset}>
-                CREATE ANOTHER PROJECT →
-              </button>
-              <button className="btn-secondary" onClick={() => navigate('/')}>
-                BACK TO HOME
-              </button>
-            </div>
-          </div>
-        )}
+        </div>
       </main>
 
-      <footer className="page-footer">
-        <p>[03] Built for developers</p>
+      {/* Footer */}
+      <footer className="get-started-footer">
+        <div className="footer-content">
+          <p>[04] Quick Setup Service</p>
+        </div>
       </footer>
     </div>
   );

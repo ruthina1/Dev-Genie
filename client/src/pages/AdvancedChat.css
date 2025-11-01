@@ -1,71 +1,142 @@
-/* Advanced Page - Matching Home Design */
-.advanced-page {
-  min-height: 100vh;
-  background-color: #ffffff;
-  background-image: 
-    linear-gradient(rgba(0, 0, 0, 0.05) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 2px, transparent 2px);
-  background-size: 40px 40px;
-  color: #000000;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
+/* ========================================
+   ADVANCED CHAT PAGE - Ludovic Argenty Style
+   Same pattern as GetStarted.css
+   ======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Navigation - Same as ChatBasic */
-.advanced-page .nav {
+.advanced-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #000000;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.15) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.15) 2px, transparent 2px);
+  background-size: 40px 40px;
+  background-position: 0 0;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.advanced-page.visible {
+  opacity: 1;
+}
+
+/* Navigation - Same as GetStarted */
+.advanced-page .get-started-nav {
   position: fixed;
   top: 0;
-  right: 40px;
-  display: flex;
-  gap: 40px;
-  padding: 40px 0;
-  z-index: 100;
+  right: 0;
+  z-index: 1000;
+  padding: 40px;
 }
 
-.advanced-page .nav-container {
+.advanced-page .nav-content {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+}
+
+.advanced-page .logo {
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.advanced-page .logo:hover {
+  opacity: 0.7;
+}
+
+.advanced-page .logo-bracket {
+  color: #666666;
+  font-weight: 400;
+}
+
+.advanced-page .logo-dev {
+  letter-spacing: 1.5px;
+  color: #ffffff;
+}
+
+.advanced-page .logo-genie {
+  letter-spacing: 1.5px;
+  color: #999999;
+}
+
+.advanced-page .nav-links {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.advanced-page .nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
   display: flex;
   align-items: center;
   gap: 10px;
+  position: relative;
 }
 
 .advanced-page .nav-number {
-  font-size: 12px;
-  font-weight: 600;
-  color: #999999;
-  letter-spacing: 0.1em;
-}
-
-.advanced-page .nav-link {
-  background: none;
-  border: none;
   font-size: 14px;
-  font-weight: 600;
-  color: #000000;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-  padding: 0;
+  font-weight: 500;
+  color: #666666;
+  letter-spacing: 0.8px;
 }
 
-.advanced-page .nav-link:hover {
-  opacity: 0.6;
+.advanced-page .nav-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #999999;
+  transition: color 0.3s ease;
 }
 
-.advanced-page .nav-link.active {
-  border-bottom: 2px solid #000000;
-  padding-bottom: 2px;
+.advanced-page .nav-btn:hover .nav-text {
+  color: #ffffff;
+}
+
+.advanced-page .nav-btn.active .nav-text {
+  color: #ffffff;
+}
+
+.advanced-page .nav-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 24px;
+  width: calc(100% - 24px);
+  height: 2px;
+  background-color: #ffffff;
 }
 
 /* Main Content */
-.advanced-page .main-content {
-  max-width: 1200px;
-  margin: 0 auto;
+.advanced-page .get-started-main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 120px 40px 80px;
-  min-height: calc(100vh - 100px);
 }
 
-.advanced-page .section {
+.advanced-page .content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
   animation: fadeInUp 0.8s ease;
 }
 
@@ -80,55 +151,102 @@
   }
 }
 
-/* Section Header */
-.advanced-page .section-header {
-  margin-bottom: 80px;
+.advanced-page .section {
+  animation: fadeInUp 0.8s ease;
 }
 
-.advanced-page .main-title {
-  font-size: 72px;
+/* Header Section - Same as GetStarted */
+.advanced-page .header-section {
+  text-align: center;
+  margin-bottom: 100px;
+}
+
+.advanced-page .status-badge {
+  display: inline-block;
+  padding: 8px 0;
+  margin-bottom: 40px;
+}
+
+.advanced-page .status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  margin-right: 12px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.advanced-page .status-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #999999;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.advanced-page .main-heading {
+  font-size: 90px;
   font-weight: 700;
   line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin-bottom: 20px;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
 }
 
-.advanced-page .main-subtitle {
+.advanced-page .heading-line {
+  display: block;
+}
+
+.advanced-page .heading-highlight {
+  color: #ffffff;
+}
+
+.advanced-page .subtext {
   font-size: 18px;
-  color: #666666;
-  line-height: 1.6;
-  max-width: 600px;
+  color: #999999;
+  line-height: 1.7;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-/* Form */
+/* Form Container */
 .advanced-page .form-container {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 50px;
+  margin-bottom: 80px;
 }
 
 .advanced-page .input-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
 }
 
 .advanced-page .input-label {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #666666;
   text-transform: uppercase;
 }
 
 .advanced-page .input-field,
 .advanced-page .textarea-field {
   width: 100%;
-  padding: 16px 0;
+  padding: 20px 0;
   background: transparent;
   border: none;
-  border-bottom: 2px solid #000000;
-  color: #000000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   font-family: inherit;
   font-size: 18px;
   outline: none;
@@ -137,45 +255,46 @@
 
 .advanced-page .input-field:focus,
 .advanced-page .textarea-field:focus {
-  border-bottom-color: #000000;
+  border-bottom-color: rgba(255, 255, 255, 0.5);
 }
 
 .advanced-page .input-field::placeholder,
 .advanced-page .textarea-field::placeholder {
-  color: #999999;
+  color: #666666;
 }
 
 .advanced-page .textarea-field {
   resize: vertical;
   min-height: 120px;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
-/* Selection Section */
+/* Selection Sections */
 .selection-section {
   margin-bottom: 80px;
 }
 
 .selection-title {
   font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
+  font-weight: 500;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  margin-bottom: 30px;
-  border-bottom: 2px solid #000000;
+  color: #ffffff;
+  margin-bottom: 40px;
   padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Architecture Grid */
 .arch-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 30px;
 }
 
 .arch-card {
-  padding: 30px;
-  border: 2px solid #000000;
+  padding: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -183,13 +302,14 @@
 }
 
 .arch-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 8px 8px 0px #000000;
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .arch-card.selected {
-  background: #000000;
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #ffffff;
 }
 
 .arch-icon {
@@ -198,26 +318,23 @@
 }
 
 .arch-name {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  margin-bottom: 12px;
+  color: #ffffff;
 }
 
 .arch-desc {
   font-size: 14px;
-  line-height: 1.5;
-  opacity: 0.7;
-}
-
-.arch-card.selected .arch-desc {
-  opacity: 0.9;
+  line-height: 1.6;
+  color: #999999;
 }
 
 .check-mark {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 20px;
+  right: 20px;
   width: 30px;
   height: 30px;
   background: #ffffff;
@@ -227,13 +344,8 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 14px;
   animation: checkPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.arch-card.selected .check-mark {
-  background: #ffffff;
-  color: #000000;
 }
 
 @keyframes checkPop {
@@ -256,20 +368,21 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 25px;
-  border: 2px solid #000000;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
 .feature-card:hover {
-  transform: translateX(4px);
+  transform: translateX(5px);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .feature-card.selected {
-  background: #000000;
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #ffffff;
 }
 
 .feature-icon {
@@ -283,20 +396,17 @@
 }
 
 .feature-name {
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+  color: #ffffff;
 }
 
 .feature-desc {
-  font-size: 13px;
-  line-height: 1.5;
-  opacity: 0.7;
-}
-
-.feature-card.selected .feature-desc {
-  opacity: 0.9;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #999999;
 }
 
 .feature-card .check-mark {
@@ -304,64 +414,49 @@
   min-width: 30px;
 }
 
-/* Buttons */
+/* Buttons - Same as GetStarted */
 .advanced-page .btn-primary,
 .advanced-page .btn-secondary {
   padding: 20px 40px;
   font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 400;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid #000000;
-}
-
-.advanced-page .btn-primary {
-  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
   color: #ffffff;
 }
 
-.advanced-page .btn-primary:hover {
-  background: #ffffff;
-  color: #000000;
+.advanced-page .btn-primary:hover,
+.advanced-page .btn-secondary:hover {
   transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 .advanced-page .btn-primary:disabled {
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
   transform: none;
 }
 
 .advanced-page .btn-primary.loading {
-  opacity: 0.7;
+  opacity: 0.5;
   pointer-events: none;
 }
 
-.advanced-page .btn-secondary {
-  background: #ffffff;
-  color: #000000;
-}
-
-.advanced-page .btn-secondary:hover {
-  background: #000000;
-  color: #ffffff;
-}
-
-/* Project Info */
+/* Project Info - Same bordered box */
 .advanced-page .project-info {
   margin-bottom: 60px;
   padding: 40px 0;
-  border-top: 2px solid #000000;
-  border-bottom: 2px solid #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .advanced-page .info-row {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
   margin-bottom: 30px;
 }
 
@@ -370,17 +465,17 @@
 }
 
 .advanced-page .info-label {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: #666666;
 }
 
 .advanced-page .info-value {
   font-size: 18px;
-  line-height: 1.6;
-  color: #000000;
+  line-height: 1.7;
+  color: #ffffff;
 }
 
 /* Actions */
@@ -390,7 +485,7 @@
   flex-wrap: wrap;
 }
 
-/* Success Message */
+/* Success Message - Same as GetStarted */
 .advanced-page .success-message {
   text-align: center;
   padding: 80px 40px;
@@ -401,13 +496,14 @@
   width: 100px;
   height: 100px;
   margin: 0 auto 40px;
-  background: #000000;
+  background: #ffffff;
+  color: #000000;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 48px;
-  color: #ffffff;
+  font-weight: 700;
   animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
@@ -421,30 +517,51 @@
 }
 
 .advanced-page .success-message h2 {
-  font-size: 48px;
+  font-size: 60px;
   font-weight: 700;
   margin-bottom: 20px;
-  letter-spacing: -0.02em;
+  letter-spacing: -1.5px;
+  color: #ffffff;
 }
 
 .advanced-page .success-message p {
   font-size: 18px;
-  color: #666666;
-  line-height: 1.6;
+  color: #999999;
+  line-height: 1.7;
 }
 
-/* Footer */
-.advanced-page .page-footer {
+.advanced-page .success-message code {
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+/* Footer - Same as GetStarted */
+.advanced-page .get-started-footer {
   position: fixed;
   bottom: 40px;
   left: 40px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #999999;
-  letter-spacing: 0.1em;
+  z-index: 100;
 }
 
-/* Responsive */
+.advanced-page .footer-content {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.advanced-page .footer-content p {
+  font-size: 14px;
+  color: #666666;
+  letter-spacing: 0.5px;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
 @media (max-width: 1024px) {
   .arch-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -452,21 +569,24 @@
 }
 
 @media (max-width: 768px) {
-  .advanced-page .nav {
-    right: 20px;
-    gap: 20px;
-    padding: 20px 0;
+  .advanced-page .get-started-nav {
+    padding: 20px;
   }
 
-  .advanced-page .main-content {
+  .advanced-page .nav-content {
+    gap: 30px;
+  }
+
+  .advanced-page .get-started-main {
     padding: 100px 20px 60px;
   }
 
-  .advanced-page .main-title {
-    font-size: 48px;
+  .advanced-page .main-heading {
+    font-size: 50px;
+    letter-spacing: -1px;
   }
 
-  .advanced-page .main-subtitle {
+  .advanced-page .subtext {
     font-size: 16px;
   }
 
@@ -491,11 +611,11 @@
   }
 
   .advanced-page .success-message h2 {
-    font-size: 36px;
+    font-size: 40px;
   }
 
-  .advanced-page .page-footer {
-    left: 20px;
-    bottom: 20px;
+  .advanced-page .get-started-footer {
+    position: static;
+    padding: 40px 20px;
   }
 }
