@@ -400,7 +400,7 @@ const Home = () => {
 
             <div className="hero-cta">
               <button className="btn btn-primary" onClick={() => navigate('/get-started')}>Get Started</button>
-              <button className="btn btn-secondary" onClick={() => navigate('/get-started')}>View Templates</button>
+              <button className="btn btn-secondary" onClick={() => navigate('/templates')}>View Templates</button>
             </div>
           </div>
         </div>
@@ -770,7 +770,7 @@ const Home = () => {
                 <h4 className="footer-heading">Product</h4>
                 <ul className="footer-list">
                   <li><a href="#services" className="footer-link">Services</a></li>
-                  <li><a href="#components" className="footer-link" onClick={(e) => { e.preventDefault(); document.getElementById('components')?.scrollIntoView({ behavior: 'smooth' }); }}>Templates</a></li>
+                  <li><a href="/templates" className="footer-link" onClick={(e) => { e.preventDefault(); navigate('/templates'); }}>Templates</a></li>
                   <li><a href="#components" className="footer-link">Components</a></li>
                 </ul>
               </div>

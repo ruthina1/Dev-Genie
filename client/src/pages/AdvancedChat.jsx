@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   FaNode, FaReact, FaPython, FaJava, FaServer, FaPaperPlane, 
   FaCheck, FaDownload, FaCode, FaCube, FaLayerGroup 
@@ -13,6 +13,7 @@ import './AdvancedChat.css';
 
 const AdvancedChat = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
@@ -48,6 +49,103 @@ const AdvancedChat = () => {
   useEffect(() => {
     setTimeout(() => setIsVisible(true), 100);
   }, []);
+
+  // Handle template data from navigation state
+  useEffect(() => {
+    if (location.state?.template) {
+      const template = location.state.template;
+      
+      // Helper function to map template values to form values
+      const mapLanguage = (lang) => {
+        const langMap = {
+          'javascript': 'javascript',
+          'python': 'python',
+          'java': 'java',
+          'go': 'go'
+        };
+        return langMap[lang?.toLowerCase()] || '';
+      };
+
+      const mapFramework = (fw, lang) => {
+        const fwMap = {
+          'express': 'express',
+          'react': 'react',
+          'vue': 'vue',
+          'angular': 'angular',
+          'django': 'django',
+          'flask': 'flask',
+          'fastapi': 'fastapi',
+          'spring': 'spring',
+          'gin': 'gin'
+        };
+        
+        // Handle compound names like "React + Express"
+        const fwLower = fw?.toLowerCase() || '';
+        
+        // For JavaScript, prioritize Express if mentioned
+        if (lang === 'javascript') {
+          if (fwLower.includes('express')) return 'express';
+          if (fwLower.includes('react')) return 'react';
+          if (fwLower.includes('vue')) return 'vue';
+          if (fwLower.includes('angular')) return 'angular';
+        }
+        
+        // Direct mapping
+        for (let key in fwMap) {
+          if (fwLower.includes(key)) {
+            return fwMap[key];
+          }
+        }
+        
+        return '';
+      };
+
+      const mapArchitecture = (arch) => {
+        const archMap = {
+          'mvc': 'mvc',
+          'microservices': 'microservices',
+          'monolith': 'monolith',
+          'clean': 'clean',
+          'rest-api': 'mvc',
+          'spa': 'mvc',
+          'full-stack': 'mvc'
+        };
+        return archMap[arch?.toLowerCase()?.replace(/\s+/g, '-')] || 'mvc';
+      };
+
+      const mappedLanguage = mapLanguage(template.language);
+      const mappedFramework = mapFramework(template.framework, mappedLanguage);
+      const mappedArchitecture = mapArchitecture(template.architecture);
+      
+      // Pre-fill form data based on template
+      const newFormData = {
+        language: mappedLanguage,
+        framework: mappedFramework,
+        architecture: mappedArchitecture,
+        features: {
+          authentication: template.features?.includes('Authentication') || false,
+          database: template.features?.includes('Database') || false,
+          testing: template.features?.includes('Testing') || false,
+          docker: template.features?.includes('Docker') || false,
+          api: template.features?.includes('API') || false,
+          frontend: template.features?.includes('Frontend') || false
+        }
+      };
+      
+      setFormData(newFormData);
+      
+      // Pre-fill user input with template prompt
+      if (template.prompt) {
+        setUserInput(template.prompt);
+        setTimeout(() => {
+          if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+          }
+        }, 100);
+      }
+    }
+  }, [location.state]);
 
   // Custom cursor effect
   useEffect(() => {
