@@ -233,20 +233,23 @@ const Templates = () => {
   };
 
   const handleCardClick = (template) => {
+    console.log('Customizing template:', template);
+    
     // Navigate to advanced page with pre-filled template data
+    const templateData = {
+      name: template.name || '',
+      description: template.description || '',
+      language: template.language || '',
+      framework: template.framework || '',
+      architecture: template.architecture || '',
+      features: Array.isArray(template.features) ? template.features : [],
+      prompt: template.prompt || ''
+    };
+    
+    console.log('Sending template data to Advanced page:', templateData);
+    
     navigate('/advanced', { 
-      state: { 
-        template: {
-          ...template,
-          name: template.name || '',
-          description: template.description || '',
-          language: template.language || '',
-          framework: template.framework || '',
-          architecture: template.architecture || '',
-          features: Array.isArray(template.features) ? template.features : [],
-          prompt: template.prompt || ''
-        }
-      } 
+      state: { template: templateData } 
     });
   };
 

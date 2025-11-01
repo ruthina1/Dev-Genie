@@ -54,6 +54,7 @@ const AdvancedChat = () => {
   useEffect(() => {
     if (location.state?.template) {
       const template = location.state.template;
+      console.log('Template received:', template);
       
       // Helper function to map template values to form values
       const mapLanguage = (lang) => {
@@ -117,6 +118,12 @@ const AdvancedChat = () => {
       const mappedFramework = mapFramework(template.framework, mappedLanguage);
       const mappedArchitecture = mapArchitecture(template.architecture);
       
+      console.log('Mapped values:', {
+        language: mappedLanguage,
+        framework: mappedFramework,
+        architecture: mappedArchitecture
+      });
+      
       // Pre-fill form data based on template
       const newFormData = {
         language: mappedLanguage,
@@ -132,6 +139,7 @@ const AdvancedChat = () => {
         }
       };
       
+      console.log('Setting form data:', newFormData);
       setFormData(newFormData);
       
       // Pre-fill user input with template prompt
@@ -490,6 +498,21 @@ const AdvancedChat = () => {
               Configure your stack, describe your idea, and get production-ready code instantly.
             </p>
           </div>
+
+          {/* Template Loaded Banner */}
+          {location.state?.template && (
+            <div className="template-loaded-banner">
+              <div className="banner-icon">
+                <FaCheck />
+              </div>
+              <div className="banner-content">
+                <h4 className="banner-title">Template Loaded: {location.state.template.name}</h4>
+                <p className="banner-text">
+                  Configuration has been pre-filled from "{location.state.template.name}". Review and customize below, then generate your project.
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Use Case Examples */}
           <div className="examples-section">
