@@ -205,40 +205,23 @@
    ======================================== */
 .option-card {
   padding: 60px 40px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
 }
 
-.option-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.02);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.option-card:hover::before {
-  opacity: 1;
-}
-
 .option-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .advanced-card {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.advanced-card::before {
-  background: rgba(255, 255, 255, 0.05);
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.15);
 }
 
 .featured-label {
@@ -272,7 +255,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
 }
 
@@ -281,13 +264,13 @@
 }
 
 .card-icon svg {
-  stroke: #ffffff;
+  stroke: #000000;
 }
 
 .card-number {
   font-size: 14px;
   font-weight: 500;
-  color: #666666;
+  color: #999999;
   letter-spacing: 0.8px;
 }
 
@@ -295,13 +278,13 @@
   font-size: 28px;
   font-weight: 600;
   letter-spacing: -0.5px;
-  color: #ffffff;
+  color: #000000;
 }
 
 .card-description {
   font-size: 16px;
   line-height: 1.7;
-  color: #999999;
+  color: #666666;
 }
 
 .card-features {
@@ -314,18 +297,18 @@
   padding: 8px 16px;
   font-size: 13px;
   font-weight: 400;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
 }
 
 .option-card:hover .feature-tag {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(0, 0, 0, 0.25);
 }
 
 .card-footer {
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .card-link {
@@ -334,7 +317,7 @@
   gap: 10px;
   font-size: 16px;
   font-weight: 400;
-  color: #ffffff;
+  color: #000000;
   transition: transform 0.3s ease;
 }
 
@@ -343,7 +326,7 @@
 }
 
 .card-link svg {
-  stroke: #ffffff;
+  stroke: #000000;
 }
 
 /* ========================================

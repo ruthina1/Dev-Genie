@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaNode, FaReact, FaPython, FaServer, FaPaperPlane, FaCheck, FaDownload } from 'react-icons/fa';
 import { SiExpress, SiMongodb, SiDjango, SiFlask } from 'react-icons/si';
-import { generateBasicProject, downloadZip } from '../services/projectGenerator';
+import { generateBasicProject, downloadZip, parsePrompt } from '../services/backendGenerator';
 import './ChatBasic.css';
 
 const ChatBasic = () => {

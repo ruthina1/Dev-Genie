@@ -1,6 +1,6 @@
 /* ========================================
-   ADVANCED CHAT PAGE - Ludovic Argenty Style
-   Same pattern as GetStarted.css
+   ADVANCED CHAT PAGE - ChatGPT Style
+   Same base as ChatBasic with form controls
    ======================================== */
 * {
   margin: 0;
@@ -11,13 +11,13 @@
 .advanced-page {
   width: 100%;
   min-height: 100vh;
-  background-color: #000000;
+  background-color: #ffffff;
   background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.15) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.15) 2px, transparent 2px);
+    linear-gradient(rgba(0, 0, 0, 0.05) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 2px, transparent 2px);
   background-size: 40px 40px;
   background-position: 0 0;
-  color: #ffffff;
+  color: #000000;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -31,7 +31,7 @@
   opacity: 1;
 }
 
-/* Navigation - Same as GetStarted */
+/* Reuse all ChatBasic navigation and layout styles */
 .advanced-page .get-started-nav {
   position: fixed;
   top: 0;
@@ -61,18 +61,18 @@
 }
 
 .advanced-page .logo-bracket {
-  color: #666666;
+  color: #999999;
   font-weight: 400;
 }
 
 .advanced-page .logo-dev {
   letter-spacing: 1.5px;
-  color: #ffffff;
+  color: #000000;
 }
 
 .advanced-page .logo-genie {
   letter-spacing: 1.5px;
-  color: #999999;
+  color: #666666;
 }
 
 .advanced-page .nav-links {
@@ -95,23 +95,23 @@
 .advanced-page .nav-number {
   font-size: 14px;
   font-weight: 500;
-  color: #666666;
+  color: #999999;
   letter-spacing: 0.8px;
 }
 
 .advanced-page .nav-text {
   font-size: 16px;
   font-weight: 400;
-  color: #999999;
+  color: #666666;
   transition: color 0.3s ease;
 }
 
 .advanced-page .nav-btn:hover .nav-text {
-  color: #ffffff;
+  color: #000000;
 }
 
 .advanced-page .nav-btn.active .nav-text {
-  color: #ffffff;
+  color: #000000;
 }
 
 .advanced-page .nav-btn.active::after {
@@ -121,22 +121,22 @@
   left: 24px;
   width: calc(100% - 24px);
   height: 2px;
-  background-color: #ffffff;
+  background-color: #000000;
 }
 
-/* Main Content */
-.advanced-page .get-started-main {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 120px 40px 80px;
-}
-
-.advanced-page .content-wrapper {
-  max-width: 1200px;
+/* Main Layout - Reuse ChatBasic */
+.advanced-page .basic-main {
+  max-width: 1400px;
   margin: 0 auto;
-  width: 100%;
+  padding: 100px 40px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  min-height: 100vh;
+}
+
+.advanced-page .description-section {
+  padding: 40px 0;
   animation: fadeInUp 0.8s ease;
 }
 
@@ -151,14 +151,9 @@
   }
 }
 
-.advanced-page .section {
-  animation: fadeInUp 0.8s ease;
-}
-
-/* Header Section - Same as GetStarted */
-.advanced-page .header-section {
-  text-align: center;
-  margin-bottom: 100px;
+/* Description styles - Same as ChatBasic */
+.advanced-page .description-header {
+  margin-bottom: 80px;
 }
 
 .advanced-page .status-badge {
@@ -171,7 +166,7 @@
   display: inline-block;
   width: 8px;
   height: 8px;
-  background: #ffffff;
+  background: #000000;
   margin-right: 12px;
   animation: pulse 2s ease-in-out infinite;
 }
@@ -188,358 +183,655 @@
 .advanced-page .status-text {
   font-size: 14px;
   font-weight: 500;
-  color: #999999;
+  color: #666666;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
-.advanced-page .main-heading {
-  font-size: 90px;
+.advanced-page .description-title {
+  font-size: 72px;
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -2px;
   margin-bottom: 30px;
+  color: #000000;
 }
 
-.advanced-page .heading-line {
+.advanced-page .title-line {
   display: block;
+  color: #000000;
 }
 
-.advanced-page .heading-highlight {
-  color: #ffffff;
-}
-
-.advanced-page .subtext {
+.advanced-page .description-subtitle {
   font-size: 18px;
-  color: #999999;
+  color: #666666;
   line-height: 1.7;
-  max-width: 700px;
-  margin: 0 auto;
 }
 
-/* Form Container */
-.advanced-page .form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
+/* How It Works - Same as ChatBasic */
+.advanced-page .how-it-works {
   margin-bottom: 80px;
 }
 
-.advanced-page .input-wrapper {
+.advanced-page .section-label {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #000000;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.advanced-page .steps-grid {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 40px;
 }
 
-.advanced-page .input-label {
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  color: #666666;
-  text-transform: uppercase;
-}
-
-.advanced-page .input-field,
-.advanced-page .textarea-field {
-  width: 100%;
-  padding: 20px 0;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  font-family: inherit;
-  font-size: 18px;
-  outline: none;
+.advanced-page .step-item {
+  border-left: 2px solid rgba(0, 0, 0, 0.2);
+  padding-left: 30px;
   transition: border-color 0.3s ease;
 }
 
-.advanced-page .input-field:focus,
-.advanced-page .textarea-field:focus {
-  border-bottom-color: rgba(255, 255, 255, 0.5);
+.advanced-page .step-item:hover {
+  border-left-color: #000000;
 }
 
-.advanced-page .input-field::placeholder,
-.advanced-page .textarea-field::placeholder {
-  color: #666666;
-}
-
-.advanced-page .textarea-field {
-  resize: vertical;
-  min-height: 120px;
-  line-height: 1.7;
-}
-
-/* Selection Sections */
-.selection-section {
-  margin-bottom: 80px;
-}
-
-.selection-title {
+.advanced-page .step-number {
   font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #ffffff;
+  font-weight: 600;
+  color: #999999;
+  letter-spacing: 0.8px;
+  margin-bottom: 15px;
+}
+
+.advanced-page .step-item h3 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+  color: #000000;
+}
+
+.advanced-page .step-item p {
+  font-size: 16px;
+  color: #666666;
+  line-height: 1.6;
+}
+
+/* Use Cases - Same as ChatBasic */
+.advanced-page .use-cases {
   margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Architecture Grid */
-.arch-grid {
+.advanced-page .examples-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
-.arch-card {
-  padding: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.advanced-page .example-card {
+  padding: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  text-align: center;
 }
 
-.arch-card:hover {
+.advanced-page .example-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.02);
+  border-color: #000000;
+  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.1);
 }
 
-.arch-card.selected {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: #ffffff;
+.advanced-page .example-icon {
+  font-size: 32px;
+  margin-bottom: 15px;
+  color: #000000;
 }
 
-.arch-icon {
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-
-.arch-name {
-  font-size: 18px;
+.advanced-page .example-card h4 {
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.3px;
-  margin-bottom: 12px;
-  color: #ffffff;
+  margin-bottom: 10px;
+  color: #000000;
 }
 
-.arch-desc {
+.advanced-page .example-card p {
   font-size: 14px;
+  color: #666666;
   line-height: 1.6;
+}
+
+/* ========================================
+   CHAT SECTION - Scrolls with Main Page
+   ======================================== */
+.advanced-page .chat-section {
+  display: flex;
+  flex-direction: column;
+  animation: fadeInUp 0.8s ease 0.2s;
+  animation-fill-mode: both;
+}
+
+.advanced-page .chat-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+.advanced-page .messages-container {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: 200px;
+}
+
+/* Empty State */
+.advanced-page .empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.advanced-page .empty-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
   color: #999999;
 }
 
-.check-mark {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 30px;
-  height: 30px;
-  background: #ffffff;
+.advanced-page .empty-state h3 {
+  font-size: 20px;
+  font-weight: 600;
   color: #000000;
+  margin-bottom: 12px;
+}
+
+.advanced-page .empty-state p {
+  font-size: 15px;
+  color: #666666;
+  margin-bottom: 32px;
+}
+
+/* Messages - Same as ChatBasic */
+.advanced-page .message {
+  display: flex;
+  gap: 20px;
+  animation: messageSlideIn 0.4s ease;
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.advanced-page .message-avatar {
+  flex-shrink: 0;
+}
+
+.advanced-page .avatar-user,
+.advanced-page .avatar-ai {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 10px;
   font-weight: 700;
-  font-size: 14px;
-  animation: checkPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  letter-spacing: 0.5px;
 }
 
-@keyframes checkPop {
-  from {
-    transform: scale(0);
-  }
-  to {
-    transform: scale(1);
-  }
+.advanced-page .avatar-user {
+  background: #000000;
+  color: #ffffff;
 }
 
-/* Features Grid */
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+.advanced-page .avatar-ai {
+  background: #f0f0f0;
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.feature-card {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-}
-
-.feature-card:hover {
-  transform: translateX(5px);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-.feature-card.selected {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: #ffffff;
-}
-
-.feature-icon {
-  font-size: 36px;
-  min-width: 60px;
-  text-align: center;
-}
-
-.feature-content {
+.advanced-page .message-content {
   flex: 1;
-}
-
-.feature-name {
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.3px;
-  margin-bottom: 6px;
-  color: #ffffff;
-}
-
-.feature-desc {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #999999;
-}
-
-.feature-card .check-mark {
-  position: static;
-  min-width: 30px;
-}
-
-/* Buttons - Same as GetStarted */
-.advanced-page .btn-primary,
-.advanced-page .btn-secondary {
-  padding: 20px 40px;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 400;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: transparent;
-  color: #ffffff;
-}
-
-.advanced-page .btn-primary:hover,
-.advanced-page .btn-secondary:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.6);
-}
-
-.advanced-page .btn-primary:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.advanced-page .btn-primary.loading {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-/* Project Info - Same bordered box */
-.advanced-page .project-info {
-  margin-bottom: 60px;
-  padding: 40px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.advanced-page .info-row {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-bottom: 30px;
+  gap: 16px;
 }
 
-.advanced-page .info-row:last-child {
+/* User Config Tags */
+.user-config {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.config-tag {
+  padding: 6px 16px;
+  background: #f0f0f0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #000000;
+  text-transform: capitalize;
+}
+
+.advanced-page .message-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #000000;
+}
+
+/* Typing Indicator */
+.advanced-page .typing-indicator {
+  display: inline-flex;
+  gap: 4px;
+  margin-right: 8px;
+}
+
+.advanced-page .typing-indicator span {
+  width: 6px;
+  height: 6px;
+  background: #999999;
+  border-radius: 50%;
+  animation: typingBounce 1.4s ease-in-out infinite;
+}
+
+.advanced-page .typing-indicator span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.advanced-page .typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.advanced-page .typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-8px);
+  }
+}
+
+/* AI Response - More Spacious */
+.advanced-page .ai-intro {
+  margin-bottom: 20px;
+  color: #000000;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.advanced-page .project-details {
+  padding: 24px;
+  background: #f9f9f9;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.advanced-page .detail-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: baseline;
+}
+
+.advanced-page .detail-row:last-child {
   margin-bottom: 0;
 }
 
-.advanced-page .info-label {
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 1px;
+.advanced-page .detail-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #999999;
+  min-width: 110px;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.advanced-page .detail-value {
+  font-size: 15px;
+  color: #000000;
+  flex: 1;
+  line-height: 1.6;
+}
+
+/* File Structure */
+.advanced-page .file-structure {
+  padding: 24px;
+  background: #f9f9f9;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.advanced-page .structure-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #999999;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.advanced-page .structure-content {
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-size: 13px;
+  line-height: 2;
+}
+
+.advanced-page .structure-line {
+  color: #000000;
+  padding: 3px 0;
+}
+
+.advanced-page .structure-line:nth-child(n+7) {
+  padding-left: 24px;
   color: #666666;
 }
 
-.advanced-page .info-value {
-  font-size: 18px;
-  line-height: 1.7;
+/* Download Button */
+.advanced-page .download-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: #000000;
+  border: 1px solid #000000;
+  border-radius: 8px;
   color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 4px;
 }
 
-/* Actions */
-.advanced-page .actions {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+.advanced-page .download-button:hover {
+  background: #333333;
+  transform: translateY(-1px);
 }
 
-/* Success Message - Same as GetStarted */
-.advanced-page .success-message {
-  text-align: center;
-  padding: 80px 40px;
-  margin-bottom: 60px;
-}
-
-.advanced-page .success-icon {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 40px;
-  background: #ffffff;
+/* Success Indicator */
+.advanced-page .success-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: #f0f9ff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
   color: #000000;
+  margin-bottom: 20px;
+}
+
+.advanced-page .success-indicator svg {
+  color: #10b981;
+  width: 18px;
+  height: 18px;
+}
+
+.advanced-page .message-text code {
+  padding: 3px 8px;
+  background: #f0f0f0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: #000000;
+}
+
+/* ========================================
+   CONFIGURATION FORM - Spacious Design
+   ======================================== */
+.config-form {
+  padding: 40px 32px;
+  background: #fafafa;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.form-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: #999999;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666666;
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+
+.form-select {
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  color: #000000;
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 52px;
+}
+
+.form-select:hover {
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+.form-select:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+.form-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f5f5f5;
+}
+
+/* Features Section */
+.features-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 52px;
+}
+
+.checkbox-label:hover {
+  border-color: rgba(0, 0, 0, 0.25);
+  background: #f9f9f9;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #000000;
+  flex-shrink: 0;
+}
+
+.checkbox-label span {
+  font-size: 15px;
+  color: #000000;
+  font-weight: 400;
+  flex: 1;
+}
+
+.checkbox-label input[type="checkbox"]:checked + span {
+  font-weight: 600;
+}
+
+/* ========================================
+   INPUT AREA - Same as ChatBasic
+   ======================================== */
+.advanced-page .input-area {
+  padding: 24px;
+  background: #ffffff;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.advanced-page .input-wrapper-chat {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 14px 20px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 28px;
+  transition: all 0.2s ease;
+}
+
+.advanced-page .input-wrapper-chat:focus-within {
+  border-color: #000000;
+  box-shadow: 0 0 0 1px #000000;
+}
+
+.advanced-page .chat-input {
+  flex: 1;
+  padding: 6px 0;
+  background: transparent;
+  border: none;
+  color: #000000;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.advanced-page .chat-input::placeholder {
+  color: #999999;
+}
+
+.advanced-page .chat-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Send Button */
+.advanced-page .send-button {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background: #000000;
+  border: none;
   border-radius: 50%;
+  color: #ffffff;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 48px;
-  font-weight: 700;
-  animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: all 0.2s ease;
+  padding: 0;
 }
 
-@keyframes scaleIn {
-  from {
-    transform: scale(0);
-  }
+.advanced-page .send-button:hover:not(.disabled) {
+  background: #333333;
+  transform: scale(1.05);
+}
+
+.advanced-page .send-button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: #cccccc;
+}
+
+.advanced-page .send-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.advanced-page .spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
   to {
-    transform: scale(1);
+    transform: rotate(360deg);
   }
 }
 
-.advanced-page .success-message h2 {
-  font-size: 60px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  letter-spacing: -1.5px;
-  color: #ffffff;
-}
-
-.advanced-page .success-message p {
-  font-size: 18px;
-  color: #999999;
-  line-height: 1.7;
-}
-
-.advanced-page .success-message code {
-  padding: 4px 12px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-family: 'Courier New', monospace;
-  font-size: 16px;
-  color: #ffffff;
-}
-
-/* Footer - Same as GetStarted */
+/* Footer */
 .advanced-page .get-started-footer {
   position: fixed;
   bottom: 40px;
@@ -555,16 +847,29 @@
 
 .advanced-page .footer-content p {
   font-size: 14px;
-  color: #666666;
+  color: #999999;
   letter-spacing: 0.5px;
 }
 
 /* ========================================
    RESPONSIVE
    ======================================== */
-@media (max-width: 1024px) {
-  .arch-grid {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 1200px) {
+  .advanced-page .basic-main {
+    grid-template-columns: 1fr;
+    gap: 80px;
+  }
+
+  .advanced-page .chat-section {
+    min-height: auto;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkbox-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -577,41 +882,38 @@
     gap: 30px;
   }
 
-  .advanced-page .get-started-main {
-    padding: 100px 20px 60px;
+  .advanced-page .basic-main {
+    padding: 100px 20px 40px;
+    gap: 60px;
   }
 
-  .advanced-page .main-heading {
+  .advanced-page .description-title {
     font-size: 50px;
     letter-spacing: -1px;
   }
 
-  .advanced-page .subtext {
+  .advanced-page .description-subtitle {
     font-size: 16px;
   }
 
-  .advanced-page .input-field,
-  .advanced-page .textarea-field,
-  .advanced-page .info-value {
-    font-size: 16px;
-  }
-
-  .arch-grid,
-  .features-grid {
+  .advanced-page .examples-grid {
     grid-template-columns: 1fr;
   }
 
-  .advanced-page .actions {
-    flex-direction: column;
+  .advanced-page .chat-section {
+    min-height: auto;
   }
 
-  .advanced-page .btn-primary,
-  .advanced-page .btn-secondary {
-    width: 100%;
+  .config-form {
+    padding: 20px;
   }
 
-  .advanced-page .success-message h2 {
-    font-size: 40px;
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkbox-grid {
+    grid-template-columns: 1fr;
   }
 
   .advanced-page .get-started-footer {
