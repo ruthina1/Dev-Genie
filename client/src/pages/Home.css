@@ -151,7 +151,7 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: #000000;
+  color: #666666;
   font-size: 16px;
   font-weight: 400;
   transition: all 0.3s ease;
@@ -172,10 +172,26 @@
 
 .nav-link:hover {
   opacity: 0.8;
+  color: #000000;
 }
 
 .nav-link:hover::after {
   width: 100%;
+}
+
+/* Active navigation state */
+.nav-link.nav-active {
+  color: #000000;
+  font-weight: 500;
+}
+
+.nav-link.nav-active::after {
+  width: 100%;
+}
+
+.nav-link.nav-active .nav-number,
+.nav-link.nav-active .nav-text {
+  color: #000000;
 }
 
 .nav-number {
@@ -575,13 +591,47 @@
 .steps-list {
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: 80px;
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* Chain line connecting steps - centered */
+.steps-list::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: top;
+  top: 48px;
+  bottom: 0;
+  width: 2px;
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: 0;
+  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.steps-list.steps-visible::before {
+  transform: translateX(-50%) scaleY(1);
 }
 
 .step-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Alternate steps left and right */
+.step-item:nth-child(odd) {
+  flex-direction: row;
+}
+
+.step-item:nth-child(even) {
+  flex-direction: row-reverse;
 }
 
 .step-number {
@@ -591,11 +641,65 @@
   color: #ffffff;
   min-width: 80px;
   letter-spacing: -1px;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+/* Chain dots connecting to center line */
+.step-number::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background-color: #ffffff;
+  border-radius: 0;
+  border: 2px solid #ffffff;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.4s ease 0.3s;
+}
+
+.step-item.step-visible .step-number::after {
+  opacity: 1;
+}
+
+/* Horizontal lines connecting step numbers to center chain */
+.step-item::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: 1;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.5s;
+}
+
+/* Odd steps (01, 03) - content on left, number on right */
+.step-item:nth-child(odd)::before {
+  left: calc(50% + 40px);
+  right: auto;
+}
+
+/* Even steps (02, 04) - number on left, content on right */
+.step-item:nth-child(even)::before {
+  right: calc(50% + 40px);
+  left: auto;
+}
+
+.step-item.step-visible::before {
+  width: calc(50% - 120px);
 }
 
 .step-content {
   flex: 1;
   padding-top: 8px;
+  max-width: 400px;
 }
 
 .step-title {
@@ -948,6 +1052,16 @@
     gap: 40px;
   }
 
+  .steps-list::before {
+    left: 29px;
+  }
+
+  .step-number::after {
+    width: 10px;
+    height: 10px;
+    left: -3px;
+  }
+
   .step-item {
     gap: 20px;
   }
@@ -1014,6 +1128,10 @@
     font-size: 11px;
   }
 
+  .steps-list::before {
+    display: none;
+  }
+
   .step-item {
     flex-direction: column;
     gap: 16px;
@@ -1022,6 +1140,10 @@
   .step-number {
     font-size: 32px;
     min-width: auto;
+  }
+
+  .step-number::after {
+    display: none;
   }
 
   .components-grid {
@@ -1054,4 +1176,7 @@
     font-size: 14px;
   }
 }
+
+
+
 

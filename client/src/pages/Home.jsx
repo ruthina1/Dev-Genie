@@ -16,10 +16,14 @@ const Home = () => {
   });
   const [isHovering, setIsHovering] = useState(false);
   const [isWhiteBackground, setIsWhiteBackground] = useState(true);
+  const [activeSection, setActiveSection] = useState('home');
+  const [stepsVisible, setStepsVisible] = useState(false);
+  const [visibleSteps, setVisibleSteps] = useState(new Set());
   const cursorRef = useRef({ 
     x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0, 
     y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0 
   });
+  const stepsRef = useRef([]);
 
   useEffect(() => {
     let animationFrameId;
@@ -105,6 +109,139 @@ const Home = () => {
     };
   }, []);
 
+  // Scroll detection for active navigation
+  useEffect(() => {
+    const sections = ['home', 'services', 'about', 'components', 'contact'];
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -70% 0px',
+      threshold: 0
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.id;
+          if (sectionId && sections.includes(sectionId)) {
+            setActiveSection(sectionId);
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    // Observe all sections
+    sections.forEach((sectionId) => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    // Fallback: check on scroll
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 150;
+      
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const element = document.getElementById(sections[i]);
+        if (element && element.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  // Steps chain animation on scroll - progressive reveal
+  useEffect(() => {
+    const stepsList = document.querySelector('.steps-list');
+    const stepItems = document.querySelectorAll('.step-item');
+    
+    if (!stepsList || stepItems.length === 0) return;
+
+    stepsRef.current = Array.from(stepItems);
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -20% 0px',
+      threshold: [0, 0.25, 0.5, 0.75, 1]
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const stepIndex = stepsRef.current.indexOf(entry.target);
+          if (stepIndex !== -1) {
+            // Progressive reveal: show step when it's 25% visible
+            if (entry.intersectionRatio >= 0.25) {
+              setVisibleSteps(prev => {
+                const newSet = new Set(prev);
+                newSet.add(stepIndex);
+                return newSet;
+              });
+              
+              // Show chain line when first step is visible
+              if (stepIndex === 0) {
+                setStepsVisible(true);
+              }
+            }
+          }
+        }
+      });
+    };
+
+    const stepObserver = new IntersectionObserver(observerCallback, observerOptions);
+    
+    stepItems.forEach((step) => {
+      stepObserver.observe(step);
+    });
+
+    // Also check on scroll for progressive reveal
+    const handleStepsScroll = () => {
+      const howToUseSection = document.getElementById('how-to-use');
+      if (!howToUseSection) return;
+
+      const rect = howToUseSection.getBoundingClientRect();
+      const isInView = rect.top < window.innerHeight * 1.2 && rect.bottom > -window.innerHeight * 0.2;
+      
+      if (isInView) {
+        const newVisibleSteps = new Set();
+        
+        stepItems.forEach((step, index) => {
+          const stepRect = step.getBoundingClientRect();
+          const viewportMiddle = window.innerHeight * 0.5;
+          const stepInView = stepRect.top < viewportMiddle && stepRect.bottom > viewportMiddle - 200;
+          
+          if (stepInView || stepRect.top < viewportMiddle) {
+            newVisibleSteps.add(index);
+          }
+        });
+        
+        if (newVisibleSteps.size > 0) {
+          setVisibleSteps(newVisibleSteps);
+          setStepsVisible(true);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleStepsScroll, { passive: true });
+    handleStepsScroll(); // Initial check
+
+    return () => {
+      stepObserver.disconnect();
+      window.removeEventListener('scroll', handleStepsScroll);
+    };
+  }, []);
+
   const techItems = ['React', 'Next.js', 'Node.js', 'Python', 'TypeScript'];
 
   return (
@@ -131,31 +268,31 @@ const Home = () => {
           <div className="nav-logo">DevGenie</div>
           <ul className="nav-menu">
             <li className="nav-item">
-              <a href="#home" className="nav-link">
+              <a href="#home" className={`nav-link ${activeSection === 'home' ? 'nav-active' : ''}`}>
                 <span className="nav-number">[01]</span>
                 <span className="nav-text">Home</span>
               </a>
             </li>
             <li className="nav-item">
-              <a href="#services" className="nav-link">
+              <a href="#services" className={`nav-link ${activeSection === 'services' ? 'nav-active' : ''}`}>
                 <span className="nav-number">[02]</span>
                 <span className="nav-text">Services</span>
               </a>
             </li>
             <li className="nav-item">
-              <a href="#about" className="nav-link">
+              <a href="#about" className={`nav-link ${activeSection === 'about' ? 'nav-active' : ''}`}>
                 <span className="nav-number">[03]</span>
                 <span className="nav-text">About</span>
               </a>
             </li>
             <li className="nav-item">
-              <a href="#templates" className="nav-link">
+              <a href="#components" className={`nav-link ${activeSection === 'components' ? 'nav-active' : ''}`}>
                 <span className="nav-number">[04]</span>
-                <span className="nav-text">Templates</span>
+                <span className="nav-text">Components</span>
               </a>
             </li>
             <li className="nav-item">
-              <a href="#contact" className="nav-link">
+              <a href="#contact" className={`nav-link ${activeSection === 'contact' ? 'nav-active' : ''}`}>
                 <span className="nav-number">[05]</span>
                 <span className="nav-text">Contact</span>
               </a>
@@ -276,8 +413,8 @@ const Home = () => {
       <section id="how-to-use" className="how-to-use">
         <div className="how-to-use-container">
           <h2 className="section-title">[05] How to Use</h2>
-          <div className="steps-list">
-            <div className="step-item">
+          <div className={`steps-list ${stepsVisible ? 'steps-visible' : ''}`}>
+            <div className={`step-item ${visibleSteps.has(0) ? 'step-visible' : ''}`}>
               <div className="step-number">01</div>
               <div className="step-content">
                 <h3 className="step-title">Choose Your Service</h3>
@@ -287,7 +424,7 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            <div className="step-item">
+            <div className={`step-item ${visibleSteps.has(1) ? 'step-visible' : ''}`}>
               <div className="step-number">02</div>
               <div className="step-content">
                 <h3 className="step-title">Configure Your Project</h3>
@@ -297,7 +434,7 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            <div className="step-item">
+            <div className={`step-item ${visibleSteps.has(2) ? 'step-visible' : ''}`}>
               <div className="step-number">03</div>
               <div className="step-content">
                 <h3 className="step-title">Generate & Download</h3>
@@ -307,7 +444,7 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            <div className="step-item">
+            <div className={`step-item ${visibleSteps.has(3) ? 'step-visible' : ''}`}>
               <div className="step-number">04</div>
               <div className="step-content">
                 <h3 className="step-title">Start Building</h3>
