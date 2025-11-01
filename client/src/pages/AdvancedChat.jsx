@@ -36,8 +36,6 @@ const AdvancedChat = () => {
     }
   });
 
-  const [showForm, setShowForm] = useState(true);
-
   useEffect(() => {
     setTimeout(() => setIsVisible(true), 100);
   }, []);
@@ -124,7 +122,6 @@ const AdvancedChat = () => {
 
     setMessages(prev => [...prev, userMessage]);
     setUserInput('');
-    setShowForm(false);
     setIsGenerating(true);
 
     // AI thinking
@@ -315,317 +312,289 @@ const AdvancedChat = () => {
         </div>
       </nav>
 
-      {/* Main Content */}
-      <main className="basic-main">
-        {/* Description Section */}
-        <div className="description-section">
-          <div className="description-header">
+      {/* Main Content - Vertical Layout */}
+      <main className="advanced-main-vertical">
+        <div className="advanced-content-vertical">
+          {/* Header */}
+          <div className="advanced-header">
             <div className="status-badge">
               <span className="status-dot"></span>
-              <span className="status-text">AI PROJECT BUILDER</span>
+              <span className="status-text">ADVANCED MODE</span>
             </div>
             
-            <h1 className="description-title">
-              <span className="title-line">Advanced</span>
-              <span className="title-line title-highlight">Service</span>
+            <h1 className="main-heading">
+              <span className="heading-line">Enterprise</span>
+              <span className="heading-line heading-highlight">Grade</span>
+              <span className="heading-line">Generator</span>
             </h1>
 
-            <p className="description-subtitle">
-              Powerful and customizable project generation with advanced configurations.
-              <br />
-              Choose your stack, architecture, and features for enterprise-grade setups.
+            <p className="subtext">
+              Configure your stack, describe your idea, and get production-ready code instantly.
             </p>
           </div>
 
-          <div className="how-it-works">
-            <h2 className="section-label">HOW IT WORKS</h2>
-            <div className="steps-grid">
-              <div className="step-item">
-                <div className="step-number">01</div>
-                <h3>Configure Your Stack</h3>
-                <p>Select programming language, framework, and architecture</p>
-              </div>
-              <div className="step-item">
-                <div className="step-number">02</div>
-                <h3>Choose Features</h3>
-                <p>Pick features like authentication, database, testing, Docker</p>
-              </div>
-              <div className="step-item">
-                <div className="step-number">03</div>
-                <h3>Describe Your Idea</h3>
-                <p>AI generates complete boilerplate code tailored to your needs</p>
-              </div>
-              <div className="step-item">
-                <div className="step-number">04</div>
-                <h3>Download & Deploy</h3>
-                <p>Get production-ready code with all dependencies configured</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="use-cases">
-            <h2 className="section-label">USE CASE EXAMPLES</h2>
-            <div className="examples-grid">
+          {/* Use Case Examples */}
+          <div className="examples-section">
+            <h2 className="section-label">QUICK START EXAMPLES</h2>
+            <div className="examples-grid-vertical">
               {useCaseExamples.map((example, index) => (
                 <div 
                   key={index}
-                  className="example-card"
+                  className="example-card-vertical"
                   onClick={() => handleExampleClick(example)}
                 >
-                  <div className="example-icon">{example.icon}</div>
-                  <h4>{example.title}</h4>
-                  <p>{example.description}</p>
+                  <div className="example-icon-vertical">{example.icon}</div>
+                  <div className="example-content">
+                    <h4>{example.title}</h4>
+                    <p>{example.description}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Chat Interface Section */}
-        <div className="chat-section">
-          <div className="chat-container">
-            {/* Messages */}
-            <div className="messages-container">
-              {messages.length === 0 && (
-                <div className="empty-state">
-                  <div className="empty-icon">
-                    <FaServer size={40} />
-                  </div>
-                  <h3>Configure and build your project</h3>
-                  <p>Select your preferences below and describe your project idea</p>
+          {/* Configuration Form - Always Visible */}
+          <div className="config-section">
+            <h2 className="section-label">PROJECT CONFIGURATION</h2>
+            
+            <div className="config-container">
+              <div className="form-grid-vertical">
+                {/* Language Selection */}
+                <div className="form-group">
+                  <label className="form-label">Programming Language *</label>
+                  <select 
+                    className="form-select"
+                    value={formData.language}
+                    onChange={(e) => handleFormChange('language', e.target.value)}
+                  >
+                    <option value="">Select Language</option>
+                    {languages.map(lang => (
+                      <option key={lang.value} value={lang.value}>{lang.label}</option>
+                    ))}
+                  </select>
                 </div>
-              )}
 
-              {messages.map((message, index) => (
-                <div key={index} className={`message ${message.type === 'user' ? 'message-user' : 'message-ai'}`}>
-                  <div className="message-avatar">
-                    {message.type === 'user' ? (
-                      <div className="avatar-user">YOU</div>
-                    ) : (
-                      <div className="avatar-ai">AI</div>
-                    )}
-                  </div>
-                  
-                  <div className="message-content">
-                    {message.type === 'user' ? (
-                      <>
-                        <div className="user-config">
-                          <div className="config-tag">{message.config.language}</div>
-                          <div className="config-tag">{message.config.framework}</div>
-                          <div className="config-tag">{message.config.architecture}</div>
-                        </div>
-                        <div className="message-text">{message.content}</div>
-                      </>
-                    ) : message.content === 'analyzing' ? (
-                      <div className="message-text">
-                        <div className="typing-indicator">
-                          <span></span><span></span><span></span>
-                        </div>
-                        Analyzing your requirements and generating project structure...
-                      </div>
-                    ) : message.content === 'response' ? (
-                      <div className="message-text">
-                        <p className="ai-intro">I've generated your enterprise-grade project:</p>
-                        
-                        <div className="project-details">
-                          <div className="detail-row">
-                            <span className="detail-label">Project</span>
-                            <span className="detail-value">{message.data.projectName}</span>
-                          </div>
-                          <div className="detail-row">
-                            <span className="detail-label">Language</span>
-                            <span className="detail-value">{message.data.language}</span>
-                          </div>
-                          <div className="detail-row">
-                            <span className="detail-label">Framework</span>
-                            <span className="detail-value">{message.data.framework}</span>
-                          </div>
-                          <div className="detail-row">
-                            <span className="detail-label">Architecture</span>
-                            <span className="detail-value">{message.data.architecture}</span>
-                          </div>
-                          {message.data.features !== 'None' && (
-                            <div className="detail-row">
-                              <span className="detail-label">Features</span>
-                              <span className="detail-value">{message.data.features}</span>
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="file-structure">
-                          <div className="structure-header">
-                            <FaServer size={14} />
-                            <span>Generated Files</span>
-                          </div>
-                          <div className="structure-content">
-                            {message.data.files.map((file, idx) => (
-                              <div key={idx} className="structure-line">{file}</div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <button className="download-button" onClick={() => handleDownload(index)}>
-                          <FaDownload />
-                          <span>Download ZIP</span>
-                        </button>
-                      </div>
-                    ) : message.content === 'downloaded' ? (
-                      <div className="message-text">
-                        <div className="success-indicator">
-                          <FaCheck />
-                          <span>Download Complete</span>
-                        </div>
-                        <p>Your project has been downloaded successfully. Extract the ZIP, run <code>npm install</code>, and start building!</p>
-                      </div>
-                    ) : null}
-                  </div>
+                {/* Framework Selection */}
+                <div className="form-group">
+                  <label className="form-label">Framework *</label>
+                  <select 
+                    className="form-select"
+                    value={formData.framework}
+                    onChange={(e) => handleFormChange('framework', e.target.value)}
+                    disabled={!formData.language}
+                  >
+                    <option value="">Select Framework</option>
+                    {formData.language && frameworks[formData.language]?.map(fw => (
+                      <option key={fw.value} value={fw.value}>{fw.label}</option>
+                    ))}
+                  </select>
                 </div>
-              ))}
-              <div ref={messagesEndRef} />
+
+                {/* Architecture Selection */}
+                <div className="form-group">
+                  <label className="form-label">Architecture *</label>
+                  <select 
+                    className="form-select"
+                    value={formData.architecture}
+                    onChange={(e) => handleFormChange('architecture', e.target.value)}
+                  >
+                    <option value="">Select Architecture</option>
+                    {architectures.map(arch => (
+                      <option key={arch.value} value={arch.value}>{arch.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Features Checkboxes */}
+              <div className="features-section-vertical">
+                <label className="form-label">Additional Features</label>
+                <div className="checkbox-grid-vertical">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={formData.features.authentication}
+                      onChange={() => handleFeatureToggle('authentication')}
+                    />
+                    <span>Authentication (JWT)</span>
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={formData.features.database}
+                      onChange={() => handleFeatureToggle('database')}
+                    />
+                    <span>Database Integration</span>
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={formData.features.testing}
+                      onChange={() => handleFeatureToggle('testing')}
+                    />
+                    <span>Testing Framework</span>
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={formData.features.docker}
+                      onChange={() => handleFeatureToggle('docker')}
+                    />
+                    <span>Docker Support</span>
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={formData.features.api}
+                      onChange={() => handleFeatureToggle('api')}
+                    />
+                    <span>REST API Setup</span>
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={formData.features.frontend}
+                      onChange={() => handleFeatureToggle('frontend')}
+                    />
+                    <span>Frontend Boilerplate</span>
+                  </label>
+                </div>
+              </div>
             </div>
+          </div>
 
-            {/* Configuration Form */}
-            {showForm && (
-              <div className="config-form">
-                <h3 className="form-title">PROJECT CONFIGURATION</h3>
-                
-                <div className="form-grid">
-                  {/* Language Selection */}
-                  <div className="form-group">
-                    <label className="form-label">Programming Language *</label>
-                    <select 
-                      className="form-select"
-                      value={formData.language}
-                      onChange={(e) => handleFormChange('language', e.target.value)}
-                    >
-                      <option value="">Select Language</option>
-                      {languages.map(lang => (
-                        <option key={lang.value} value={lang.value}>{lang.label}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Framework Selection */}
-                  <div className="form-group">
-                    <label className="form-label">Framework *</label>
-                    <select 
-                      className="form-select"
-                      value={formData.framework}
-                      onChange={(e) => handleFormChange('framework', e.target.value)}
-                      disabled={!formData.language}
-                    >
-                      <option value="">Select Framework</option>
-                      {formData.language && frameworks[formData.language]?.map(fw => (
-                        <option key={fw.value} value={fw.value}>{fw.label}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Architecture Selection */}
-                  <div className="form-group">
-                    <label className="form-label">Architecture *</label>
-                    <select 
-                      className="form-select"
-                      value={formData.architecture}
-                      onChange={(e) => handleFormChange('architecture', e.target.value)}
-                    >
-                      <option value="">Select Architecture</option>
-                      {architectures.map(arch => (
-                        <option key={arch.value} value={arch.value}>{arch.label}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Features Checkboxes */}
-                <div className="features-section">
-                  <label className="form-label">Additional Features</label>
-                  <div className="checkbox-grid">
-                    <label className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={formData.features.authentication}
-                        onChange={() => handleFeatureToggle('authentication')}
-                      />
-                      <span>Authentication (JWT)</span>
-                    </label>
-                    <label className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={formData.features.database}
-                        onChange={() => handleFeatureToggle('database')}
-                      />
-                      <span>Database Integration</span>
-                    </label>
-                    <label className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={formData.features.testing}
-                        onChange={() => handleFeatureToggle('testing')}
-                      />
-                      <span>Testing Framework</span>
-                    </label>
-                    <label className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={formData.features.docker}
-                        onChange={() => handleFeatureToggle('docker')}
-                      />
-                      <span>Docker Support</span>
-                    </label>
-                    <label className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={formData.features.api}
-                        onChange={() => handleFeatureToggle('api')}
-                      />
-                      <span>REST API Setup</span>
-                    </label>
-                    <label className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={formData.features.frontend}
-                        onChange={() => handleFeatureToggle('frontend')}
-                      />
-                      <span>Frontend Boilerplate</span>
-                    </label>
-                  </div>
-                </div>
+          {/* Input Area - Always Below Configuration */}
+          <div className="prompt-section">
+            <h2 className="section-label">DESCRIBE YOUR PROJECT</h2>
+            <div className="input-wrapper-chat">
+              <textarea
+                ref={textareaRef}
+                className="chat-input"
+                placeholder="Describe your project idea in detail... (e.g., A login and signup system with JWT authentication using Node.js backend and React frontend)"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+                rows="3"
+                disabled={isGenerating}
+              />
+              <button 
+                className={`send-button ${!userInput.trim() || isGenerating || !formData.language || !formData.framework || !formData.architecture ? 'disabled' : ''}`}
+                onClick={handleSendMessage}
+                disabled={!userInput.trim() || isGenerating || !formData.language || !formData.framework || !formData.architecture}
+              >
+                {isGenerating ? (
+                  <div className="spinner"></div>
+                ) : (
+                  <FaPaperPlane />
+                )}
+              </button>
+            </div>
+            {(!formData.language || !formData.framework || !formData.architecture) && (
+              <div className="input-hint-warning">
+                Please complete the configuration above before sending
               </div>
             )}
+          </div>
 
-            {/* Input Area */}
-            <div className="input-area">
-              <div className="input-wrapper-chat">
-                <textarea
-                  ref={textareaRef}
-                  className="chat-input"
-                  placeholder="Describe your project idea... (e.g., A login and signup system with JWT authentication)"
-                  value={userInput}
-                  onChange={(e) => setUserInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSendMessage();
-                    }
-                  }}
-                  rows="1"
-                  disabled={isGenerating}
-                />
-                <button 
-                  className={`send-button ${!userInput.trim() || isGenerating ? 'disabled' : ''}`}
-                  onClick={handleSendMessage}
-                  disabled={!userInput.trim() || isGenerating}
-                >
-                  {isGenerating ? (
-                    <div className="spinner"></div>
-                  ) : (
-                    <FaPaperPlane />
-                  )}
-                </button>
+          {/* Messages Section */}
+          {messages.length > 0 && (
+            <div className="messages-section">
+              <h2 className="section-label">CONVERSATION</h2>
+              <div className="messages-list">
+                {messages.map((message, index) => (
+                  <div key={index} className={`message ${message.type === 'user' ? 'message-user' : 'message-ai'}`}>
+                    <div className="message-avatar">
+                      {message.type === 'user' ? (
+                        <div className="avatar-user">YOU</div>
+                      ) : (
+                        <div className="avatar-ai">AI</div>
+                      )}
+                    </div>
+                    
+                    <div className="message-content">
+                      {message.type === 'user' ? (
+                        <>
+                          <div className="user-config">
+                            <div className="config-tag">{message.config.language}</div>
+                            <div className="config-tag">{message.config.framework}</div>
+                            <div className="config-tag">{message.config.architecture}</div>
+                          </div>
+                          <div className="message-text">{message.content}</div>
+                        </>
+                      ) : message.content === 'analyzing' ? (
+                        <div className="message-text">
+                          <div className="typing-indicator">
+                            <span></span><span></span><span></span>
+                          </div>
+                          Analyzing your requirements and generating project structure...
+                        </div>
+                      ) : message.content === 'response' ? (
+                        <div className="message-text">
+                          <p className="ai-intro">I've generated your enterprise-grade project:</p>
+                          
+                          <div className="project-details">
+                            <div className="detail-row">
+                              <span className="detail-label">Project</span>
+                              <span className="detail-value">{message.data.projectName}</span>
+                            </div>
+                            <div className="detail-row">
+                              <span className="detail-label">Language</span>
+                              <span className="detail-value">{message.data.language}</span>
+                            </div>
+                            <div className="detail-row">
+                              <span className="detail-label">Framework</span>
+                              <span className="detail-value">{message.data.framework}</span>
+                            </div>
+                            <div className="detail-row">
+                              <span className="detail-label">Architecture</span>
+                              <span className="detail-value">{message.data.architecture}</span>
+                            </div>
+                            {message.data.features !== 'None' && (
+                              <div className="detail-row">
+                                <span className="detail-label">Features</span>
+                                <span className="detail-value">{message.data.features}</span>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="file-structure">
+                            <div className="structure-header">
+                              <FaServer size={14} />
+                              <span>Generated Files</span>
+                            </div>
+                            <div className="structure-content">
+                              {message.data.files.map((file, idx) => (
+                                <div key={idx} className="structure-line">{file}</div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <button className="download-button" onClick={() => handleDownload(index)}>
+                            <FaDownload />
+                            <span>Download ZIP</span>
+                          </button>
+                        </div>
+                      ) : message.content === 'downloaded' ? (
+                        <div className="message-text">
+                          <div className="success-indicator">
+                            <FaCheck />
+                            <span>Download Complete</span>
+                          </div>
+                          <p>Your project has been downloaded successfully. Extract the ZIP, run <code>npm install</code>, and start building!</p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
+                <div ref={messagesEndRef} />
               </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
 

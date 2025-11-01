@@ -1,5 +1,5 @@
 /* ========================================
-   CHAT BASIC PAGE - Ludovic Argenty Style
+   CHAT BASIC PAGE - Vertical Layout
    ======================================== */
 * {
   margin: 0;
@@ -17,10 +17,8 @@
   background-size: 40px 40px;
   background-position: 0 0;
   color: #000000;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   position: relative;
   opacity: 0;
   transition: opacity 0.8s ease;
@@ -30,9 +28,7 @@
   opacity: 1;
 }
 
-/* ========================================
-   NAVIGATION - Same as GetStarted
-   ======================================== */
+/* Navigation - Same as AdvancedChat */
 .basic-page .get-started-nav {
   position: fixed;
   top: 0;
@@ -126,23 +122,19 @@
 }
 
 /* ========================================
-   MAIN LAYOUT
+   MAIN CONTENT - Vertical Layout
    ======================================== */
-.basic-main {
-  max-width: 1400px;
+.basic-main-vertical {
+  max-width: 900px;
   margin: 0 auto;
-  padding: 100px 40px 40px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  padding: 120px 40px 80px;
   min-height: 100vh;
 }
 
-/* ========================================
-   DESCRIPTION SECTION
-   ======================================== */
-.description-section {
-  padding: 40px 0;
+.basic-content-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
   animation: fadeInUp 0.8s ease;
 }
 
@@ -157,17 +149,21 @@
   }
 }
 
-.description-header {
-  margin-bottom: 80px;
+/* ========================================
+   HEADER
+   ======================================== */
+.basic-header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.status-badge {
+.basic-page .status-badge {
   display: inline-block;
   padding: 8px 0;
   margin-bottom: 40px;
 }
 
-.status-dot {
+.basic-page .status-dot {
   display: inline-block;
   width: 8px;
   height: 8px;
@@ -185,7 +181,7 @@
   }
 }
 
-.status-text {
+.basic-page .status-text {
   font-size: 14px;
   font-weight: 500;
   color: #666666;
@@ -193,509 +189,147 @@
   text-transform: uppercase;
 }
 
-.description-title {
+.basic-page .main-heading {
   font-size: 72px;
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -2px;
   margin-bottom: 30px;
-  color: #000000;
 }
 
-.title-line {
+.basic-page .heading-line {
   display: block;
   color: #000000;
 }
 
-.title-highlight {
-  color: #000000;
-}
-
-.description-subtitle {
+.basic-page .subtext {
   font-size: 18px;
   color: #666666;
   line-height: 1.7;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-/* How It Works */
-.how-it-works {
-  margin-bottom: 80px;
+/* ========================================
+   EXAMPLES SECTION
+   ======================================== */
+.examples-section {
+  margin-bottom: 20px;
 }
 
-.section-label {
+.basic-page .section-label {
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 1px;
   color: #000000;
   text-transform: uppercase;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.steps-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-.step-item {
-  border-left: 2px solid rgba(0, 0, 0, 0.2);
-  padding-left: 30px;
-  transition: border-color 0.3s ease;
-}
-
-.step-item:hover {
-  border-left-color: #000000;
-}
-
-.step-number {
-  font-size: 14px;
-  font-weight: 600;
-  color: #999999;
-  letter-spacing: 0.8px;
-  margin-bottom: 15px;
-}
-
-.step-item h3 {
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-  margin-bottom: 12px;
-  color: #000000;
-}
-
-.step-item p {
-  font-size: 16px;
-  color: #666666;
-  line-height: 1.6;
-}
-
-/* Use Cases */
-.use-cases {
-  margin-bottom: 40px;
-}
-
-.examples-grid {
+.examples-grid-vertical {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
 }
 
-.example-card {
-  padding: 30px;
+.example-card-vertical {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
   border: 1px solid rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.example-card:hover {
-  transform: translateY(-5px);
-  border-color: #000000;
-  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.1);
-}
-
-.example-icon {
-  font-size: 32px;
-  margin-bottom: 15px;
-}
-
-.example-card h4 {
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.3px;
-  margin-bottom: 10px;
-  color: #000000;
-}
-
-.example-card p {
-  font-size: 14px;
-  color: #666666;
-  line-height: 1.6;
-  font-style: italic;
-}
-
-/* ========================================
-   CHAT SECTION - ChatGPT Style
-   ======================================== */
-.chat-section {
-  position: sticky;
-  top: 100px;
-  height: calc(100vh - 140px);
-  display: flex;
-  flex-direction: column;
-  animation: fadeInUp 0.8s ease 0.2s;
-  animation-fill-mode: both;
-}
-
-.chat-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: #ffffff;
   border-radius: 8px;
-  overflow: hidden;
-}
-
-/* Messages Container */
-.messages-container {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.messages-container::-webkit-scrollbar {
-  width: 6px;
-}
-
-.messages-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.messages-container::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
-}
-
-.messages-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.2);
-}
-
-/* Empty State */
-.empty-state {
-  text-align: center;
-  padding: 80px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-}
-
-.empty-icon {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24px;
-  color: #999999;
-}
-
-.empty-state h3 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #000000;
-  margin-bottom: 12px;
-}
-
-.empty-state p {
-  font-size: 15px;
-  color: #666666;
-  margin-bottom: 32px;
-}
-
-.example-prompts {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
-
-.example-tag {
-  padding: 12px 24px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  font-size: 14px;
-  color: #666666;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.example-tag:hover {
+.example-card-vertical:hover {
   border-color: #000000;
-  color: #000000;
   transform: translateX(5px);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
 }
 
-/* Messages - ChatGPT Style */
-.message {
-  display: flex;
-  gap: 16px;
-  animation: messageSlideIn 0.4s ease;
-}
-
-@keyframes messageSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.message-avatar {
-  flex-shrink: 0;
-}
-
-.avatar-user,
-.avatar-ai {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+.example-icon-vertical {
+  font-size: 24px;
+  color: #000000;
+  min-width: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
 }
 
-.avatar-user {
-  background: #000000;
-  color: #ffffff;
-}
-
-.avatar-ai {
-  background: #f0f0f0;
-  color: #000000;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.message-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.message-text {
+.example-content h4 {
   font-size: 15px;
-  line-height: 1.7;
-  color: #000000;
-}
-
-/* Typing Indicator */
-.typing-indicator {
-  display: inline-flex;
-  gap: 4px;
-  margin-right: 8px;
-}
-
-.typing-indicator span {
-  width: 6px;
-  height: 6px;
-  background: #999999;
-  border-radius: 50%;
-  animation: typingBounce 1.4s ease-in-out infinite;
-}
-
-.typing-indicator span:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.typing-indicator span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.typing-indicator span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes typingBounce {
-  0%, 60%, 100% {
-    transform: translateY(0);
-  }
-  30% {
-    transform: translateY(-8px);
-  }
-}
-
-/* AI Response - ChatGPT Style */
-.ai-intro {
-  margin-bottom: 16px;
-  color: #000000;
-  font-weight: 500;
-}
-
-.project-details {
-  padding: 20px;
-  background: #f9f9f9;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
-  margin-bottom: 16px;
-}
-
-.detail-row {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
-  align-items: baseline;
-}
-
-.detail-row:last-child {
-  margin-bottom: 0;
-}
-
-.detail-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #666666;
-  min-width: 100px;
-}
-
-.detail-value {
-  font-size: 15px;
-  color: #000000;
-  flex: 1;
-}
-
-/* File Structure */
-.file-structure {
-  padding: 20px;
-  background: #f9f9f9;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
-  margin-bottom: 16px;
-}
-
-.structure-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #666666;
-  margin-bottom: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.structure-content {
-  font-family: 'Courier New', 'Consolas', monospace;
-  font-size: 13px;
-  line-height: 1.8;
-}
-
-.structure-line {
-  color: #000000;
-  padding: 2px 0;
-}
-
-.structure-line:nth-child(n+6) {
-  padding-left: 20px;
-  color: #666666;
-}
-
-/* Download Button - ChatGPT Style */
-.download-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background: #000000;
-  border: 1px solid #000000;
-  border-radius: 6px;
-  color: #ffffff;
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.download-button:hover {
-  background: #333333;
-}
-
-/* Success Indicator */
-.success-indicator {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  background: #f0f9ff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
-  font-size: 14px;
   font-weight: 600;
   color: #000000;
-  margin-bottom: 16px;
+  margin-bottom: 4px;
 }
 
-.success-indicator svg {
-  color: #10b981;
-}
-
-.message-text code {
-  padding: 3px 8px;
-  background: #f0f0f0;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
+.example-content p {
   font-size: 13px;
-  color: #000000;
+  color: #666666;
+  line-height: 1.5;
 }
 
 /* ========================================
-   INPUT AREA - ChatGPT Style
+   PROMPT SECTION - Always Visible
    ======================================== */
-.input-area {
-  padding: 16px 24px 24px;
+.prompt-section {
+  padding: 40px;
   background: #ffffff;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-.input-wrapper-chat {
+.basic-page .input-wrapper-chat {
   display: flex;
   align-items: flex-end;
   gap: 12px;
-  padding: 12px 16px;
+  padding: 16px 24px;
   background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 24px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 28px;
   transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.input-wrapper-chat:focus-within {
+.basic-page .input-wrapper-chat:focus-within {
   border-color: #000000;
-  box-shadow: 0 0 0 1px #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
-.chat-input {
+.basic-page .chat-input {
   flex: 1;
-  padding: 4px 0;
+  padding: 6px 0;
   background: transparent;
   border: none;
   color: #000000;
   font-family: inherit;
   font-size: 15px;
-  line-height: 1.5;
+  line-height: 1.6;
   resize: none;
   outline: none;
-  max-height: 200px;
+  max-height: 150px;
   overflow-y: auto;
 }
 
-.chat-input::placeholder {
+.basic-page .chat-input::placeholder {
   color: #999999;
 }
 
-.chat-input:disabled {
+.basic-page .chat-input:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Send Button - ChatGPT Style */
-.send-button {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
+/* Send Button */
+.basic-page .send-button {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
   background: #000000;
   border: none;
   border-radius: 50%;
@@ -708,23 +342,23 @@
   padding: 0;
 }
 
-.send-button:hover:not(.disabled) {
+.basic-page .send-button:hover:not(.disabled) {
   background: #333333;
   transform: scale(1.05);
 }
 
-.send-button.disabled {
+.basic-page .send-button.disabled {
   opacity: 0.4;
   cursor: not-allowed;
   background: #cccccc;
 }
 
-.send-button svg {
+.basic-page .send-button svg {
   width: 16px;
   height: 16px;
 }
 
-.spinner {
+.basic-page .spinner {
   width: 16px;
   height: 16px;
   border: 2px solid rgba(255, 255, 255, 0.3);
@@ -740,8 +374,252 @@
 }
 
 /* ========================================
-   FOOTER
+   MESSAGES SECTION
    ======================================== */
+.messages-section {
+  padding: 40px;
+  background: #fafafa;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Messages - ChatGPT Style */
+.basic-page .message {
+  display: flex;
+  gap: 20px;
+  animation: messageSlideIn 0.4s ease;
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.basic-page .message-avatar {
+  flex-shrink: 0;
+}
+
+.basic-page .avatar-user,
+.basic-page .avatar-ai {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.basic-page .avatar-user {
+  background: #000000;
+  color: #ffffff;
+}
+
+.basic-page .avatar-ai {
+  background: #f0f0f0;
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.basic-page .message-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.basic-page .message-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #000000;
+}
+
+/* Typing Indicator */
+.basic-page .typing-indicator {
+  display: inline-flex;
+  gap: 4px;
+  margin-right: 8px;
+}
+
+.basic-page .typing-indicator span {
+  width: 6px;
+  height: 6px;
+  background: #999999;
+  border-radius: 50%;
+  animation: typingBounce 1.4s ease-in-out infinite;
+}
+
+.basic-page .typing-indicator span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.basic-page .typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.basic-page .typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-8px);
+  }
+}
+
+/* AI Response */
+.basic-page .ai-intro {
+  margin-bottom: 20px;
+  color: #000000;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.basic-page .project-details {
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.basic-page .detail-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: baseline;
+}
+
+.basic-page .detail-row:last-child {
+  margin-bottom: 0;
+}
+
+.basic-page .detail-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #999999;
+  min-width: 110px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.basic-page .detail-value {
+  font-size: 15px;
+  color: #000000;
+  flex: 1;
+  line-height: 1.6;
+}
+
+/* File Structure */
+.basic-page .file-structure {
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.basic-page .structure-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #999999;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.basic-page .structure-content {
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-size: 13px;
+  line-height: 2;
+}
+
+.basic-page .structure-line {
+  color: #000000;
+  padding: 3px 0;
+}
+
+.basic-page .structure-line:nth-child(n+7) {
+  padding-left: 24px;
+  color: #666666;
+}
+
+/* Download Button */
+.basic-page .download-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: #000000;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.basic-page .download-button:hover {
+  background: #333333;
+  transform: translateY(-1px);
+}
+
+/* Success Indicator */
+.basic-page .success-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: #f0f9ff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.basic-page .success-indicator svg {
+  color: #10b981;
+  width: 18px;
+  height: 18px;
+}
+
+.basic-page .message-text code {
+  padding: 3px 8px;
+  background: #f0f0f0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: #000000;
+}
+
+/* Footer */
 .basic-page .get-started-footer {
   position: fixed;
   bottom: 40px;
@@ -764,18 +642,6 @@
 /* ========================================
    RESPONSIVE
    ======================================== */
-@media (max-width: 1200px) {
-  .basic-main {
-    grid-template-columns: 1fr;
-    gap: 80px;
-  }
-
-  .chat-section {
-    position: static;
-    height: 600px;
-  }
-}
-
 @media (max-width: 768px) {
   .basic-page .get-started-nav {
     padding: 20px;
@@ -785,47 +651,26 @@
     gap: 30px;
   }
 
-  .basic-main {
-    padding: 100px 20px 40px;
-    gap: 60px;
+  .basic-main-vertical {
+    padding: 100px 20px 60px;
   }
 
-  .description-title {
+  .basic-page .main-heading {
     font-size: 50px;
     letter-spacing: -1px;
   }
 
-  .description-subtitle {
+  .basic-page .subtext {
     font-size: 16px;
   }
 
-  .examples-grid {
+  .examples-grid-vertical {
     grid-template-columns: 1fr;
   }
 
-  .chat-section {
-    height: 500px;
-  }
-
-  .chat-container {
-    height: 100%;
-  }
-
-  .chat-header {
-    padding: 30px 20px;
-  }
-
-  .messages-container {
-    padding: 20px;
-  }
-
-  .input-area {
-    padding: 20px;
-  }
-
-  .send-btn {
-    width: 50px;
-    height: 50px;
+  .prompt-section,
+  .messages-section {
+    padding: 24px;
   }
 
   .basic-page .get-started-footer {

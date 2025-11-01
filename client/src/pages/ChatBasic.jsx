@@ -225,187 +225,157 @@ const ChatBasic = () => {
         </div>
       </nav>
 
-      {/* Main Content */}
-      <main className="basic-main">
-        {/* Description Section */}
-        <div className="description-section">
-          <div className="description-header">
+      {/* Main Content - Vertical Layout */}
+      <main className="basic-main-vertical">
+        <div className="basic-content-vertical">
+          {/* Header */}
+          <div className="basic-header">
             <div className="status-badge">
               <span className="status-dot"></span>
               <span className="status-text">QUICK SETUP</span>
             </div>
             
-            <h1 className="description-title">
-              <span className="title-line">Basic</span>
-              <span className="title-line title-highlight">Service</span>
+            <h1 className="main-heading">
+              <span className="heading-line">Basic Developer</span>
+              <span className="heading-line">Mode</span>
             </h1>
 
-            <p className="description-subtitle">
+            <p className="subtext">
               Describe what environment you want, and DevGenie will create it instantly.
-              <br />
               Fast, simple, and production-ready project structures.
             </p>
           </div>
 
-          <div className="how-it-works">
-            <h2 className="section-label">HOW IT WORKS</h2>
-            <div className="steps-grid">
-              <div className="step-item">
-                <div className="step-number">01</div>
-                <h3>Describe Your Project</h3>
-                <p>Enter a prompt describing what you want to build</p>
-              </div>
-              <div className="step-item">
-                <div className="step-number">02</div>
-                <h3>AI Generates Structure</h3>
-                <p>DevGenie creates folders, files, and configurations</p>
-              </div>
-              <div className="step-item">
-                <div className="step-number">03</div>
-                <h3>Download & Build</h3>
-                <p>Download the ZIP file and start coding immediately</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="use-cases">
+          {/* Use Case Examples Section */}
+          <div className="examples-section">
             <h2 className="section-label">USE CASE EXAMPLES</h2>
-            <div className="examples-grid">
+            <div className="examples-grid-vertical">
               {useCaseExamples.map((example, index) => (
                 <div 
                   key={index}
-                  className="example-card"
+                  className="example-card-vertical"
                   onClick={() => handleExampleClick(example.prompt)}
                 >
-                  <div className="example-icon">{example.icon}</div>
-                  <h4>{example.title}</h4>
-                  <p>"{example.prompt}"</p>
+                  <div className="example-icon-vertical">{example.icon}</div>
+                  <div className="example-content">
+                    <h4>{example.title}</h4>
+                    <p>"{example.prompt}"</p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Chat Interface Section - ChatGPT Style */}
-        <div className="chat-section">
-          <div className="chat-container">
-            {/* Messages */}
-            <div className="messages-container">
-              {messages.length === 0 && (
-                <div className="empty-state">
-                  <div className="empty-icon">
-                    <FaServer size={40} />
-                  </div>
-                  <h3>Start a conversation</h3>
-                  <p>Type your project requirements below or click an example</p>
-                </div>
-              )}
-
-              {messages.map((message, index) => (
-                <div key={index} className={`message ${message.type === 'user' ? 'message-user' : 'message-ai'}`}>
-                  <div className="message-avatar">
-                    {message.type === 'user' ? (
-                      <div className="avatar-user">YOU</div>
-                    ) : (
-                      <div className="avatar-ai">AI</div>
-                    )}
-                  </div>
-                  
-                  <div className="message-content">
-                    {message.type === 'user' ? (
-                      <div className="message-text">{message.content}</div>
-                    ) : message.content === 'analyzing' ? (
-                      <div className="message-text">
-                        <div className="typing-indicator">
-                          <span></span><span></span><span></span>
-                        </div>
-                        Analyzing your requirements...
-                      </div>
-                    ) : message.content === 'response' ? (
-                      <div className="message-text">
-                        <p className="ai-intro">I've generated your project structure:</p>
-                        
-                        <div className="project-details">
-                          <div className="detail-row">
-                            <span className="detail-label">Project</span>
-                            <span className="detail-value">{message.data.projectName}</span>
-                          </div>
-                          {message.data.framework && (
-                            <div className="detail-row">
-                              <span className="detail-label">Framework</span>
-                              <span className="detail-value">{message.data.framework}</span>
-                            </div>
-                          )}
-                          <div className="detail-row">
-                            <span className="detail-label">Features</span>
-                            <span className="detail-value">{message.data.features}</span>
-                          </div>
-                        </div>
-
-                        <div className="file-structure">
-                          <div className="structure-header">
-                            <FaServer size={14} />
-                            <span>Project Structure</span>
-                          </div>
-                          <div className="structure-content">
-                            {message.data.structure.map((file, idx) => (
-                              <div key={idx} className="structure-line">{file}</div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <button className="download-button" onClick={() => handleDownload(index)}>
-                          <FaDownload />
-                          <span>Download ZIP</span>
-                        </button>
-                      </div>
-                    ) : message.content === 'downloaded' ? (
-                      <div className="message-text">
-                        <div className="success-indicator">
-                          <FaCheck />
-                          <span>Download Complete</span>
-                        </div>
-                        <p>Your project has been downloaded successfully. Extract the ZIP and run <code>npm install</code> to get started!</p>
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
-              ))}
-              <div ref={messagesEndRef} />
+          {/* Prompt Input Section - Always Visible */}
+          <div className="prompt-section">
+            <div className="input-wrapper-chat">
+              <textarea
+                ref={textareaRef}
+                className="chat-input"
+                placeholder="Describe your project... (e.g., I want a Node.js setup with Express and MongoDB)"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+                rows="1"
+                disabled={isGenerating}
+              />
+              <button 
+                className={`send-button ${!userInput.trim() || isGenerating ? 'disabled' : ''}`}
+                onClick={handleSendMessage}
+                disabled={!userInput.trim() || isGenerating}
+              >
+                {isGenerating ? (
+                  <div className="spinner"></div>
+                ) : (
+                  <FaPaperPlane />
+                )}
+              </button>
             </div>
+          </div>
 
-            {/* Input Area - ChatGPT Style */}
-            <div className="input-area">
-              <div className="input-wrapper-chat">
-                <textarea
-                  ref={textareaRef}
-                  className="chat-input"
-                  placeholder="Describe your project... (e.g., I want a Node.js setup with Express and MongoDB)"
-                  value={userInput}
-                  onChange={(e) => setUserInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSendMessage();
-                    }
-                  }}
-                  rows="1"
-                  disabled={isGenerating}
-                />
-                <button 
-                  className={`send-button ${!userInput.trim() || isGenerating ? 'disabled' : ''}`}
-                  onClick={handleSendMessage}
-                  disabled={!userInput.trim() || isGenerating}
-                >
-                  {isGenerating ? (
-                    <div className="spinner"></div>
-                  ) : (
-                    <FaPaperPlane />
-                  )}
-                </button>
+          {/* Messages Section */}
+          {messages.length > 0 && (
+            <div className="messages-section">
+              <div className="messages-list">
+                {messages.map((message, index) => (
+                  <div key={index} className={`message ${message.type === 'user' ? 'message-user' : 'message-ai'}`}>
+                    <div className="message-avatar">
+                      {message.type === 'user' ? (
+                        <div className="avatar-user">YOU</div>
+                      ) : (
+                        <div className="avatar-ai">AI</div>
+                      )}
+                    </div>
+                    
+                    <div className="message-content">
+                      {message.type === 'user' ? (
+                        <div className="message-text">{message.content}</div>
+                      ) : message.content === 'analyzing' ? (
+                        <div className="message-text">
+                          <div className="typing-indicator">
+                            <span></span><span></span><span></span>
+                          </div>
+                          Analyzing your requirements...
+                        </div>
+                      ) : message.content === 'response' ? (
+                        <div className="message-text">
+                          <p className="ai-intro">I've generated your project structure:</p>
+                          
+                          <div className="project-details">
+                            <div className="detail-row">
+                              <span className="detail-label">Project</span>
+                              <span className="detail-value">{message.data.projectName}</span>
+                            </div>
+                            {message.data.framework && (
+                              <div className="detail-row">
+                                <span className="detail-label">Framework</span>
+                                <span className="detail-value">{message.data.framework}</span>
+                              </div>
+                            )}
+                            <div className="detail-row">
+                              <span className="detail-label">Features</span>
+                              <span className="detail-value">{message.data.features}</span>
+                            </div>
+                          </div>
+
+                          <div className="file-structure">
+                            <div className="structure-header">
+                              <FaServer size={14} />
+                              <span>Project Structure</span>
+                            </div>
+                            <div className="structure-content">
+                              {message.data.structure.map((file, idx) => (
+                                <div key={idx} className="structure-line">{file}</div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <button className="download-button" onClick={() => handleDownload(index)}>
+                            <FaDownload />
+                            <span>Download ZIP</span>
+                          </button>
+                        </div>
+                      ) : message.content === 'downloaded' ? (
+                        <div className="message-text">
+                          <div className="success-indicator">
+                            <FaCheck />
+                            <span>Download Complete</span>
+                          </div>
+                          <p>Your project has been downloaded successfully. Extract the ZIP and run <code>npm install</code> to get started!</p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
+                <div ref={messagesEndRef} />
               </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
 
