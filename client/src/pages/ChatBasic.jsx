@@ -12,11 +12,69 @@ const ChatBasic = () => {
   const [userInput, setUserInput] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedZip, setGeneratedZip] = useState(null);
+  const [cursorPosition, setCursorPosition] = useState({ 
+    x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0, 
+    y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0 
+  });
+  const [isHovering, setIsHovering] = useState(false);
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
+  const cursorRef = useRef({ 
+    x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0, 
+    y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0 
+  });
 
   useEffect(() => {
     setTimeout(() => setIsVisible(true), 100);
+  }, []);
+
+  // Custom cursor effect
+  useEffect(() => {
+    let animationFrameId;
+    let isInitialized = false;
+
+    const updateCursor = (e) => {
+      cursorRef.current = { x: e.clientX, y: e.clientY };
+      
+      if (!isInitialized) {
+        setCursorPosition({ x: e.clientX, y: e.clientY });
+        isInitialized = true;
+      }
+      
+      if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(() => {
+          setCursorPosition(cursorRef.current);
+          animationFrameId = null;
+        });
+      }
+    };
+
+    const handleInteractiveHover = (e) => {
+      const target = e.target;
+      const isInteractive = 
+        target.tagName === 'A' || 
+        target.tagName === 'BUTTON' || 
+        target.closest('.example-card-vertical') ||
+        target.closest('.nav-btn') ||
+        target.closest('.logo') ||
+        target.closest('.download-button') ||
+        target.closest('.send-button');
+      
+      setIsHovering(isInteractive);
+    };
+
+    document.addEventListener('mousemove', updateCursor, { passive: true });
+    document.addEventListener('mouseover', handleInteractiveHover, { passive: true });
+    document.addEventListener('mouseout', handleInteractiveHover, { passive: true });
+
+    return () => {
+      document.removeEventListener('mousemove', updateCursor);
+      document.removeEventListener('mouseover', handleInteractiveHover);
+      document.removeEventListener('mouseout', handleInteractiveHover);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -385,6 +443,22 @@ const ChatBasic = () => {
           <p>[04] Quick Setup Service</p>
         </div>
       </footer>
+
+      {/* Custom Cursor */}
+      <div
+        className={`custom-cursor ${isHovering ? 'cursor-hover' : ''}`}
+        style={{
+          left: `${cursorPosition.x}px`,
+          top: `${cursorPosition.y}px`,
+        }}
+      />
+      <div
+        className="cursor-dot"
+        style={{
+          left: `${cursorPosition.x}px`,
+          top: `${cursorPosition.y}px`,
+        }}
+      />
     </div>
   );
 };

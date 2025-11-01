@@ -22,10 +22,65 @@
   position: relative;
   opacity: 0;
   transition: opacity 0.8s ease;
+  cursor: none;
 }
 
 .basic-page.visible {
   opacity: 1;
+}
+
+/* ========================================
+   CUSTOM CURSOR STYLES
+   ======================================== */
+.basic-page .custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000000;
+  border-radius: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 99999;
+  background-color: transparent;
+  will-change: width, height;
+  box-sizing: border-box;
+  opacity: 1;
+}
+
+.basic-page .custom-cursor.cursor-hover {
+  width: 60px;
+  height: 60px;
+}
+
+.basic-page .cursor-dot {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background-color: #000000;
+  border-radius: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 100000;
+  will-change: left, top;
+  opacity: 1;
+}
+
+.basic-page .custom-cursor.cursor-hover ~ .cursor-dot {
+  display: none;
+}
+
+/* Hide cursor on mobile */
+@media (max-width: 768px) {
+  .basic-page {
+    cursor: auto;
+  }
+  
+  .basic-page .custom-cursor,
+  .basic-page .cursor-dot {
+    display: none;
+  }
 }
 
 /* Navigation - Same as AdvancedChat */
