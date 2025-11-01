@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Home.css';
 import { 
   FaBolt, 
@@ -10,6 +11,7 @@ import {
 } from 'react-icons/fa';
 
 const Home = () => {
+  const navigate = useNavigate();
   const [cursorPosition, setCursorPosition] = useState({ 
     x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0, 
     y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0 
@@ -191,7 +193,7 @@ const Home = () => {
             </div>
 
             <div className="hero-cta">
-              <button className="btn btn-primary">Get Started</button>
+              <button className="btn btn-primary" onClick={() => navigate('/get-started')}>Get Started</button>
               <button className="btn btn-secondary">View Templates</button>
             </div>
           </div>
