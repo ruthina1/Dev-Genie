@@ -21,6 +21,7 @@ const Home = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [stepsVisible, setStepsVisible] = useState(false);
   const [visibleSteps, setVisibleSteps] = useState(new Set());
+  const [scrollProgress, setScrollProgress] = useState(0);
   const cursorRef = useRef({ 
     x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0, 
     y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0 
@@ -163,6 +164,66 @@ const Home = () => {
     };
   }, []);
 
+  // Scroll-triggered section animations
+  useEffect(() => {
+    const animationObserverOptions = {
+      root: null,
+      rootMargin: '0px 0px -100px 0px',
+      threshold: 0.1
+    };
+
+    const animationObserverCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('section-visible');
+        }
+      });
+    };
+
+    const animationObserver = new IntersectionObserver(
+      animationObserverCallback,
+      animationObserverOptions
+    );
+
+    // Observe all sections
+    const allSections = document.querySelectorAll('section');
+    allSections.forEach(section => {
+      animationObserver.observe(section);
+    });
+
+    // Initial check for sections already in viewport
+    setTimeout(() => {
+      allSections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          section.classList.add('section-visible');
+        }
+      });
+    }, 100);
+
+    return () => {
+      allSections.forEach(section => {
+        animationObserver.unobserve(section);
+      });
+    };
+  }, []);
+
+  // Scroll progress indicator
+  useEffect(() => {
+    const updateScrollProgress = () => {
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = (window.scrollY / scrollHeight) * 100;
+      setScrollProgress(scrolled);
+    };
+
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+    updateScrollProgress(); // Initial check
+
+    return () => {
+      window.removeEventListener('scroll', updateScrollProgress);
+    };
+  }, []);
+
   // Steps chain animation on scroll - progressive reveal
   useEffect(() => {
     const stepsList = document.querySelector('.steps-list');
@@ -248,6 +309,14 @@ const Home = () => {
 
   return (
     <div className="home">
+      {/* Scroll Progress Indicator */}
+      <div className="scroll-progress">
+        <div 
+          className="scroll-progress-bar" 
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
       {/* Custom Cursor */}
       <div 
         className={`custom-cursor ${isHovering ? 'cursor-hover' : ''} ${isWhiteBackground ? '' : 'cursor-white'}`}
@@ -364,24 +433,118 @@ const Home = () => {
       {/* Services Section */}
       <section id="services" className="services">
         <div className="services-container">
-          <h2 className="section-title">[02] Services</h2>
-          <div className="services-list">
-            <div className="service-item">
-              <span className="service-arrow">→</span>
-              <div className="service-content">
-                <h3 className="service-title">Basic Service</h3>
-                <p className="service-description">
-                  Quickly generate common environments and folder structures for your projects.
-                </p>
+          <div className="services-header">
+            <h2 className="section-title">[02] Our Services</h2>
+            <p className="services-subtitle">
+              Two powerful modes to match your workflow. Choose the speed of Basic or the intelligence of Advanced.
+            </p>
+          </div>
+
+          <div className="services-grid">
+            {/* Basic Service Card */}
+            <div className="service-card basic-service">
+              <div className="service-card-header">
+                <div className="service-badge">QUICK SETUP</div>
+                <div className="service-icon-wrapper">
+                  <FaBolt />
+                </div>
               </div>
+
+              <div className="service-card-body">
+                <h3 className="service-card-title">Basic Developer Mode</h3>
+                <p className="service-card-description">
+                  Lightning-fast project generation for developers who know exactly what they need. 
+                  Get common environments and folder structures instantly with zero configuration.
+                </p>
+
+                <div className="service-features-list">
+                  <div className="service-feature">
+                    <span className="feature-check">✓</span>
+                    <span>Pre-configured templates</span>
+                  </div>
+                  <div className="service-feature">
+                    <span className="feature-check">✓</span>
+                    <span>Instant ZIP download</span>
+                  </div>
+                  <div className="service-feature">
+                    <span className="feature-check">✓</span>
+                    <span>Popular tech stacks</span>
+                  </div>
+                  <div className="service-feature">
+                    <span className="feature-check">✓</span>
+                    <span>Best practice structure</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="service-card-footer">
+                <button className="service-btn" onClick={() => navigate('/get-started')}>
+                  <span>Get Started</span>
+                  <span className="btn-arrow">→</span>
+                </button>
+              </div>
+
+              <div className="service-card-number">01</div>
             </div>
-            <div className="service-item">
-              <span className="service-arrow">→</span>
-              <div className="service-content">
-                <h3 className="service-title">Advanced Service</h3>
-                <p className="service-description">
-                  Describe your project idea in a prompt, and DevGenie will build the right setup, 
-                  complete with dependencies and starter files, ready to download as a ZIP.
+
+            {/* Advanced Service Card */}
+            <div className="service-card advanced-service">
+              <div className="service-card-header">
+                <div className="service-badge recommended">RECOMMENDED</div>
+                <div className="service-icon-wrapper advanced-icon">
+                  <FaRobot />
+                </div>
+              </div>
+
+              <div className="service-card-body">
+                <h3 className="service-card-title">Advanced Developer Mode</h3>
+                <p className="service-card-description">
+                  AI-powered project builder that understands your needs. Describe your vision in plain English, 
+                  and DevGenie creates a complete, production-ready setup tailored to your specifications.
+                </p>
+
+                <div className="service-features-list">
+                  <div className="service-feature">
+                    <span className="feature-check">✓</span>
+                    <span>Custom architecture selection</span>
+                  </div>
+                  <div className="service-feature">
+                    <span className="feature-check">✓</span>
+                    <span>AI-powered code generation</span>
+                  </div>
+                  <div className="service-feature">
+                    <span className="feature-check">✓</span>
+                  <span>Authentication & database setup</span>
+                  </div>
+                  <div className="service-feature">
+                    <span className="feature-check">✓</span>
+                    <span>Testing & Docker configuration</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="service-card-footer">
+                <button className="service-btn advanced-btn" onClick={() => navigate('/get-started')}>
+                  <span>Start Building</span>
+                  <span className="btn-arrow">→</span>
+                </button>
+              </div>
+
+              <div className="service-card-number advanced-number">02</div>
+            </div>
+          </div>
+
+          {/* Services Comparison */}
+          <div className="services-comparison">
+            <div className="comparison-item">
+              <div className="comparison-icon">
+                <FaBullseye />
+              </div>
+              <div className="comparison-content">
+                <h4 className="comparison-title">Perfect for Every Developer</h4>
+                <p className="comparison-text">
+                  Whether you're prototyping quickly or building enterprise applications, 
+                  DevGenie adapts to your needs and experience level.
                 </p>
               </div>
             </div>
@@ -392,20 +555,89 @@ const Home = () => {
       {/* About Us Section */}
       <section id="about" className="about">
         <div className="about-container">
-          <h2 className="section-title">[03] About Us</h2>
+          <h2 className="section-title">[03] About DevGenie</h2>
+          
           <div className="about-content">
-            <div className="about-text">
-              <p className="about-description">
-                DevGenie is a smart web platform that helps developers skip the boring setup work 
-                and jump straight into building. We understand that starting a new project can be 
-                time-consuming and repetitive, so we've built a solution that handles all the 
-                initial configuration for you.
-              </p>
-              <p className="about-description">
-                Whether you need a simple Node.js setup or a full React + Node app with authentication, 
-                DevGenie instantly creates ready-to-use project environments based on what you need. 
-                Our mission is to make starting new projects faster, easier, and a lot more fun.
-              </p>
+            <div className="about-main">
+              <div className="about-text">
+                <h3 className="about-heading">
+                  Skip the boring setup,
+                  <br />
+                  jump straight into building.
+                </h3>
+                <p className="about-description">
+                  DevGenie is a smart web platform designed for developers who want to focus on what matters—building great software. 
+                  We eliminate the repetitive, time-consuming setup work that slows you down at the start of every project.
+                </p>
+                <p className="about-description">
+                  Whether you need a basic Node.js environment or a full-stack application with authentication, 
+                  database integration, and Docker configuration, DevGenie creates production-ready project structures 
+                  tailored to your exact specifications in seconds.
+                </p>
+              </div>
+
+              <div className="about-stats">
+                <div className="stat-card">
+                  <div className="stat-icon">
+                    <FaBolt />
+                  </div>
+                  <div className="stat-content">
+                    <div className="stat-value">10x</div>
+                    <div className="stat-label">Faster Setup</div>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">
+                    <FaRocket />
+                  </div>
+                  <div className="stat-content">
+                    <div className="stat-value">100+</div>
+                    <div className="stat-label">Templates</div>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">
+                    <FaCog />
+                  </div>
+                  <div className="stat-content">
+                    <div className="stat-value">∞</div>
+                    <div className="stat-label">Configurations</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="about-features">
+              <div className="feature-item">
+                <div className="feature-number">01</div>
+                <div className="feature-details">
+                  <h4 className="feature-title">Instant Project Generation</h4>
+                  <p className="feature-text">
+                    Get fully configured project structures in seconds, not hours. 
+                    No more copying and pasting from old projects.
+                  </p>
+                </div>
+              </div>
+              <div className="feature-item">
+                <div className="feature-number">02</div>
+                <div className="feature-details">
+                  <h4 className="feature-title">Industry Best Practices</h4>
+                  <p className="feature-text">
+                    Every generated project follows modern conventions and best practices, 
+                    ensuring clean, maintainable code from day one.
+                  </p>
+                </div>
+              </div>
+              <div className="feature-item">
+                <div className="feature-number">03</div>
+                <div className="feature-details">
+                  <h4 className="feature-title">Production-Ready Code</h4>
+                  <p className="feature-text">
+                    Start with code that's ready for production deployment, complete with 
+                    configuration files, documentation, and testing setup.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -414,7 +646,7 @@ const Home = () => {
       {/* How to Use Section */}
       <section id="how-to-use" className="how-to-use">
         <div className="how-to-use-container">
-          <h2 className="section-title">[05] How to Use</h2>
+          <h2 className="section-title">[06] How to Use</h2>
           <div className={`steps-list ${stepsVisible ? 'steps-visible' : ''}`}>
             <div className={`step-item ${visibleSteps.has(0) ? 'step-visible' : ''}`}>
               <div className="step-number">01</div>
@@ -463,7 +695,7 @@ const Home = () => {
       {/* Components Section */}
       <section id="components" className="components">
         <div className="components-container">
-          <h2 className="section-title">[06] Components</h2>
+          <h2 className="section-title">[04] Components</h2>
           <div className="components-grid">
             <div className="component-item">
               <div className="component-icon">
